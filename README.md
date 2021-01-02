@@ -1,5 +1,4 @@
-# Competitive-Programming-Site-and-Online-Judge
-Bsc Project(CSE5202)
+#Andalus Competitive Programming Online Judge(Andalus CPOJ)
 
 
 It is an automated judge system to run programming contests. It has a mechanism to submit problem solutions, have them judged fully automatically and provides (web)interfaces for teams, the jury and the general public.
