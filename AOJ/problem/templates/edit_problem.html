@@ -1,0 +1,29 @@
+{% extends 'admin_base_site.html'%}
+{% block title%}Edit Problem{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+<div class="card" style="margin-left: 5%;  margin-right: 5%;">
+    <div class="card-header" style="font-size: 18px;"> 
+        <strong>{{'Edit problem'|upper}}</strong> 
+        <ul class="object-tools" style="position: absolute;top: 60px; right: 15px;">
+           <li> 
+               <a href="{% url 'delete_problem' problem_id%}">delete problem?</a>
+           </li>
+       </ul>
+    </div>
+        <form method="POST"  enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            {% include 'horizontal_form_5.html' %}            
+            <input type="submit" value="Update">
+            <a class = "btn btn-outline-info" href="{% url 'testcase' problem_id %}" style="float:right;">Update test case</a>
+
+        </form>
+    </div>
+{% endblock %}
+
+
+
+
+

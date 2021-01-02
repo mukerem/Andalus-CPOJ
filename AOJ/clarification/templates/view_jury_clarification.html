@@ -1,0 +1,153 @@
+{% extends 'jury_base_site.html' %}
+
+{% block title%}View Clarification | Andalus {% endblock %}
+{% block content %}  
+{% load static %} 
+
+<style>
+
+    button {
+        background-color: gray;
+        border: 0;
+        border-radius: 4px;
+        padding: 8px 24px;
+        font-size: 18px;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
+
+    button:focus {
+        outline: none;
+    }
+
+    button:hover {
+        background: rgb(214, 85, 89);
+    }
+
+    
+    [class^="popup"] {
+        background: rgba(100, 100, 100, 0.5);
+        position: fixed;
+        display: none;
+        z-index: 5000;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        
+    }
+
+    [class^="popup"] > div {
+        max-width: 600px;
+        width: 70%;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+        background: #FFFFFF;
+        padding: 30px;
+        z-index: 5001;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    .clarification {
+        transition: all 0.1s ease-in-out;
+    }
+
+    .clarification:hover {
+        cursor: pointer;
+        background-color: rgba(0, 255, 0, 0.1) !important;
+    }
+
+    button[name="close"] {
+        margin-top: 2em;
+    }
+
+    [class^="submitted-code"] {
+        position: absolute;
+        display: none;
+        background-color: #FFF;
+        padding: 36px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
+        left: 0;
+        top: 0;
+    }
+
+    .source-code-editor {
+        height: 600px;
+        width: 400px;
+        font-size: 20px;
+    }
+    .id_question{
+        rows: 10;
+    }
+</style>
+<script src="{% static 'ace-builds/src/ace.js' %}" type="text/javascript" charset="utf-8"> </script>
+<script src="{% static 'ace-builds/src/theme-twilight.js' %}" type="text/javascript" charset="utf-8"> </script>
+<script src="{% static 'ace-builds/src/mode-javascript.js' %}" type="text/javascript" charset="utf-8"> </script>
+
+
+{% if not request.session.active_contest_admin %}
+    <div class="container nocontest">
+        <h5 class="ur-card-title" style="font-size: 2em;">There is no active contest</h5>
+    </div>
+{% else %}
+<div class="col-sm-10 col-centered" style="margin-top: 2em;">
+    <h5 class="ur-card-title" style="font-size: 2em;">clarification answered list 
+    </h5>
+    
+    <div>
+        {% if all_clarification %}
+        <table class="table table-light" >
+            <thead class="table-info">
+                <tr>
+                    <th ><strong>ID</strong></th>
+                    <th ><strong>Time</strong></th>
+                    <th ><strong>Problem</strong></th>
+                    <th ><strong>Question</strong></th>
+                    <th ><strong>Answer</strong></th>
+                </tr>
+            </thead>
+            
+        {% for i in all_clarification %}
+                
+                <tr class = "clarification" data-js="open{{forloop.counter}}">
+                        <td class="id" >{{i.id}}</td>
+                        <td>{{i.send_time}}</td>
+                        
+                        {% if i.problem %}
+                        <td>{{i.problem.short_name}}</td>
+                        {% else %}
+                        <td>General</td>
+                        {% endif %}
+
+                        <td>{{i.short_question}}</td>
+                        <td>{{i.short_answer}}</td>
+                </tr>
+                
+                <div class="popup{{forloop.counter}}">
+                    <div class="ur-card">
+                        <div class="clarification-message-{{ i.id }}">
+                        <div>
+                            <p><b>Detail of clarification request</b></p>
+                            <textarea cols="48" rows="5">{{i.question}}</textarea>
+                            <textarea cols="48" rows="5">{{i.answer}}</textarea>
+                        </div>
+                    </div>
+                        
+                    <button name="close">Close</button>
+                    </div>
+                </div>
+            </div>
+           
+        {%endfor%}
+        </table>
+        {% endif %}
+    </div>
+
+</div>
+{% endif %}
+{% endblock %}

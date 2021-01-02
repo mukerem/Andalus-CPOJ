@@ -1,0 +1,27 @@
+{% extends base_site %}
+
+{% block title%}Profile{% endblock %}
+{% block content %}  
+{% load static %} 
+{% load crispy_forms_tags %}
+<div style="margin-left: 15%;  margin-right: 35%;" >
+	
+	<div class="card">
+	    <div class="card-header" style="font-size: 18px;"> 
+	        <strong>PROFILE</strong> 
+	        <ul class="object-tools" style="position: absolute;top: 60px; right: 15px;">
+	           <li> 
+	           	<a href="{% url 'change_password' %}">change password?</a>
+	           </li>
+	       </ul>
+	    </div>
+
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            {% include 'horizontal_form_5.html' %}
+            <input type="submit" value="Update" style="margin-left: 1%;">
+	        <input type="hidden" name="next" value="{{ next }}">          
+        </form>
+    </div>
+</div>
+{% endblock %}

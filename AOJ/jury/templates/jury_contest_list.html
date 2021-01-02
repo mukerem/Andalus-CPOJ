@@ -1,0 +1,62 @@
+{% extends 'jury_base_site.html'%}
+{% block title%}Contest List | Andalus{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+
+<script  src="{% static 'files/jsi18n.js' %}"> </script>   
+
+<div class="col-sm-6 col-centered" style="margin-top: 2em;">
+    <h5 class="ur-card-title" style="font-size: 2em;">contest list</h5>
+    <table class="table table-striped" >
+        <thead class="table-info">
+            <tr>
+                <th ><strong>title</strong></th>
+                <th ><strong>start time</strong></th>
+                <th ><strong>status</strong></th>
+            </tr>
+        </thead>
+        {% for i in contest %}
+            {% if i.enable %}
+                <tr>
+                    <td ><a href="{% url 'jury_contest_detail' i.id %}" style="text-decoration: none;">{{i.title}}</a></td>
+                    <td >{{i.start_time}}</td>
+                    {% if i.status == "on going" %}
+                        <td style="color:green;">
+                            {{i.status}}
+                            <a href="{% url 'deactivate_contest_scoreboard' i.id %}" style="text-decoration: none; float:right;margin-right:2em;">view result</a>                           
+                        </td>
+                    {% elif i.status == "active" %}
+                        <td style="color:black;">{{i.status}}</td>
+                    {% elif i.status == "not active" %}
+                        <td style="color:gray;">{{i.status}}</td>
+                    {% elif i.status == "end" %}
+                        <td style="color:blue;">
+                            {{i.status}}
+                            <a href="{% url 'deactivate_contest_scoreboard' i.id %}" style="text-decoration: none; float:right;margin-right:2em;">view result</a>                           
+                        </td>
+                    {% elif i.status == "deactivate" %}
+                        <td style="color:red;">
+                            {{i.status}}
+                            <a href="{% url 'deactivate_contest_scoreboard' i.id %}" style="text-decoration: none; float:right;margin-right:2em;">view result</a>
+                        </td>
+                    {% endif %}
+
+                </tr>
+            {% else %}
+                <tr style="background: rgb(200, 206, 198);">
+                    <td ><a href="{% url 'jury_contest_detail' i.id %}">{{i.title}}</a></td>
+                    <td >{{i.start_time}}</td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    
+</div>
+
+
+{% endblock %}
+
+   

@@ -1,0 +1,65 @@
+
+{% extends 'admin_base_site.html' %}
+
+{% block title%}Clarification Request | Andalus {% endblock %}
+{% block content %}  
+{% load static %} 
+
+
+{% if not request.session.active_contest_admin %}
+    <div class="container nocontest">
+        <h5 class="ur-card-title" style="font-size: 2em;">There is no active contest</h5>
+    </div>
+{% else %}
+<div class="card" style="margin-left: 1%;  margin-right: 1%;margin-top:2%;%" >
+    <div class="card-header titles" style="font-size: 18px;" > 
+	    <strong>CLARIFICATION REQUEST LIST</strong> 
+     
+    <a class = "btn btn-outline-primary" href="{% url 'new_clarification' %}" style="float:right;">new clarification</a>
+    <a class = "btn btn-outline-primary" href="{% url 'answered_clarification' %}" style="float:right; margin-right:20%;%">answered clarifications</a>
+    
+        {% if all_clarification %}
+        <table class="table table-light" >
+            <thead class="table-info">
+                <tr>
+                    <th ><strong>ID</strong></th>
+                    <th ><strong>Time</strong></th>
+                    <th ><strong>Problem</strong></th>
+                    <th ><strong>User</strong></th>
+                    <th ><strong>Question</strong></th>
+                    <th ><strong></strong></th>
+
+                </tr>
+            </thead>
+            
+            {% for i in all_clarification %}
+                
+                <tr>
+                        <td>{{i.id}}</td>
+                        <td>{{i.send_time}}</td>
+                        {% if i.problem %}
+                        <td>{{i.problem.short_name}}</td>
+                        {% else %}
+                        <td>General</td>
+                        {% endif %}
+
+                        <td>{{i.user.username}}</td>
+                        <td>{{i.short_question}}</td>
+                        <td><a href="{% url 'clarification_answer' i.id %}" style="margin-right:20px;" title="answer"> <img src="{% static 'Images/icons/view_detail.png' %}" height="20" width="20"></a></td>
+                </tr>
+                 
+            {%endfor%}
+        </table>
+        {% else %}
+        <div class="container nocontest">
+            <h5 class="ur-card-title" style="font-size: 1em;">There is no new clarification request for this contest</h5>
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+{% endif %}
+
+{% endblock %}
+

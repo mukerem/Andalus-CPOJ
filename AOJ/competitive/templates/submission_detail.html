@@ -1,0 +1,210 @@
+{% extends base_page %}
+{% load js%}
+{% load static %}
+{% block title%}View Detail Submission {% endblock %}
+{% block content %}
+
+<br><br>
+
+<div class="col-md-6" style="margin-left:5%;">
+    <table style="font-size:15px; width:100%;" class="table">
+
+        <tr>
+            <td > <strong>Username: </strong></td>
+            <td > {{submit.user.username}} </td>
+        </tr>
+        <tr>
+            <td > <strong>Submit Real Time: </strong></td>
+            <td > {{submit.submit_time}} </td>
+        </tr>
+        <tr>
+            <td > <strong>Submit Contest Time: </strong></td>
+            <td > {{submit_contest_time}} </td>
+        </tr>
+        <tr>
+            <td > <strong>Result: </strong></td>
+            {% if submit.result == "Correct" %}
+            <td style="color: green;"> {{submit.result}} </td>
+            {% else %}
+            <td style="color: red;"> {{submit.result}} </td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td > <strong>Contest: </strong></td>
+            <td > {{submit.contest.title}} </td>
+        </tr>
+        <tr>
+            <td > <strong>Problem: </strong></td>
+            <td > {{submit.problem.title}} </td>
+        </tr>
+        <tr>
+            <td > <strong>Language: </strong></td>
+            <td > {{submit.language.name}} </td>
+        </tr>
+
+    </table>
+</div>
+
+<div class="col-md-6" style="margin-left: 5%;margin-top: 2%;">
+    {% if not submit_file %}
+    <h4> file <small> <u>{{file_name}}</u> </small> is not supported file format for {{submit.language.name}}
+        language</h4>
+    {% else %}
+    <strong>{{'source code:'|upper}} <u>{{file_name}}</u></strong>
+  
+    <!-- ################ -->
+    <style type="text/css">
+        #editor {
+            height: 800px;
+            font-size: 20px;
+        }
+    </style>
+    <div id="editor"><pre>{{submit_file}}</pre></div>
+
+    <script src="{% static 'ace-builds/src/ace.js' %}" type="text/javascript" charset="utf-8"> </script>
+    <script src="{% static 'ace-builds/src/theme-twilight.js' %}" type="text/javascript" charset="utf-8"> </script>
+    <script src="{% static 'ace-builds/src/mode-javascript.js' %}" type="text/javascript" charset="utf-8"> </script>
+
+
+    <script type="text/javascript">
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        // var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+        // editor.session.setMode(new JavaScriptMode());
+        var lang = {{language_mode | js}};
+        editor.session.setMode("ace/mode/" + lang);
+    </script>
+    <!-- @@@@@@@@@@@@@@@@@ -->
+
+    {% if base_page == "admin_base_site.html" %}
+    <a class="btn btn-outline-info" href="{% url 'single_rejudge' submit_id=submit.id %}"
+        style="float: right;margin-top:10px;margin-bottom:30px; width: 200px;">rejudge</a>
+    {% endif %}
+
+    <button class="btn btn-secondary"
+        style="float: right;margin-right:20px;margin-top:10px;margin-bottom:30px; width: 100px;"
+        onclick="copyFunction()" title="copy code to clipboard">copy
+    </button>
+    
+    {% endif %}
+
+</div>
+
+<div class="col-md-10" style="margin-left: 5%; margin-top:200px; margin-bottom: 100px;">
+    <div class="tab">
+        {% for id, result, answer, input_file, output_file, user_output_file, time in submit_detail %}
+        {% if result == "Correct" %}
+        <button class="tablinks" onclick="openTestacse(event, '{{id}}')" title="correct"> <img
+                src="{% static 'Images/icons/Ok.png' %}" height="30" width="30"></button>
+        {% elif result == "Not Run" %}
+        <button class="tablinks" onclick="openTestacse(event, '{{id}}')" title="not run"> <img
+                src="{% static 'Images/icons/unknown.png' %}" height="30" width="30"></button>
+        {% else %}
+        <button class="tablinks" onclick="openTestacse(event, '{{id}}')" title="not correct"> <img
+                src="{% static 'Images/icons/cancel.png' %}" height="30" width="30"></button>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+
+    {% for id, result, answer, input_file, output_file, user_output_file, time in submit_detail %}
+    <div id="tab-{{id}}" class="tabcontent">
+        <div class="tab">
+            {% if result == "Correct" %}
+            <label><strong>Result:&nbsp;&nbsp;&nbsp;</strong> </label><label style="color:green;"> {{result}} </label>
+            {% else %}
+            <label><strong>Result:&nbsp;&nbsp;&nbsp;</strong> </label><label style="color:red;"> {{result}} </label>
+            {% endif %}
+            {% if not result == "Not Run" %}
+            {% if not time == 0 %}
+            <label style="margin-left:3%;"><strong>Execution time:&nbsp;&nbsp;&nbsp;</strong> </label><label>
+                {{time}} </label>
+            {% endif %}
+
+            <label style="margin-left:3%;"><strong>testcase input:&nbsp;&nbsp;&nbsp;&nbsp;</strong></label><a
+                href="{{input_file.0}}">{{input_file.1}}</a>
+            <label style="margin-left:3%;"><strong>testcase output:&nbsp;&nbsp;</strong></label><a
+                href="{{output_file.0}}">{{output_file.1}}</a>
+            <label style="margin-left:3%;"><strong>user
+                    output:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></label><a
+                href="{{user_output_file.0}}">{{user_output_file.1}}
+            </a>
+
+            {% endif %}
+
+        </div>
+
+        <div style=" width: 100%; height:700px; display: block; overflow: scroll; font-size: 16px;">
+            <table style="width: 100%;">
+                    <thead>
+                    <th>Test case answer</th>
+                    <th>User answer</th>
+                    </thead>
+                <hr>
+                {% for correct_answer, user_answer, check in answer %}
+                <tr>
+                    <td style="width:50%; color: green;">{{correct_answer}}</td>
+                    {% if check == "Correct" %}
+                        <td style="width:50%; color:green;">{{user_answer}}</td>
+                    {% else %}
+                    <td style="width:50%; color:red;">{{user_answer}}</td>
+                    {% endif %}
+                </tr>
+                
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<script>
+    function copyFunction() {
+
+        var copy_text = document.getElementById("editor").innerText;
+        var input_element = document.createElement("textarea");
+        document.body.appendChild(input_element);
+        input_element.value = copy_text;
+        input_element.select();
+        // document.getElementById("area").select();
+        document.execCommand("copy");
+        input_element.remove();
+        // alert("Copied the text "+ copy_text);
+
+        // var w = window.open('', '', 'width=100, height=100');
+        // w.document.write('Hello');
+        // w.focus;
+        // setTimeout(function(){
+        //     w.close();
+        // }, 2000)
+    }
+
+
+    // tab for detail submit
+    function openTestacse(evt, testcase_id) {
+        var testcase = "tab-" + testcase_id;
+        var i, tabcontent, tablinks;
+        // console.log(testcase);
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        document.getElementById(testcase).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+
+{% endblock %}
+
+
+{% block javascript %}
+
+{% endblock %}

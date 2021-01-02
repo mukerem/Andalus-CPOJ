@@ -1,0 +1,50 @@
+
+{% load static %}
+
+
+{% if not submission_list %}
+    <div style="margin:2em 10em 0 5em "  id="submission_view">
+        <h5 class="ur-card-title" style="font-size: 1.5em;">There is no submission for problem: {{problem_title}}</h5>
+    </div>
+{% else %} 
+        {% comment %} <h5 class="ur-card-title" style="font-size: 1.5em;float:left;">submission list for problem: {{problem_title}}</h5> {% endcomment %}
+        <label style="margin: 0 0 20px; font-weight: 300; font-size: 20px; color: #666;">
+            Select submission to rejudge</label>  
+        <button class="btn btn-primary" onclick="startRejudge()" style="float: right; width: 200px;">start rejudging</button> 
+            
+        <table class="table table-striped">
+            <thead class="table-info">
+            <tr>
+                <th><input type="checkbox" name="_selected_all_action" onclick="selector(0)" value="all" class="select-all" id="all-selector" style="margin-left:20%;"><strong>&nbsp;All</strong></th>
+                <th ><strong>SID</strong></th>
+                <th ><strong>Contest time</strong></th>
+                <th ><strong>Real time</strong></th>
+                <th ><strong>User</strong></td></th>
+                <th ><strong>Problem</strong></th>
+                <th ><strong>Language</strong></th>
+                <th ><strong>Result</strong></th>
+            </tr>
+            </thead>
+            {% for i in submission_list %}
+                <tr class="submit" id="{{i.id}}">
+                    <td class="check_box">
+                        <input type="checkbox" name="_selected_action" onclick="selector('{{i.id}}')" value="{{i.id}}" class="action-select" id="checkbox-{{i.id}}" style="margin-left:20%;">
+                    </td>
+                         
+                    <td >{{i.id}}</td>
+                    <td>{{i.contest_time}}</td>
+                    <td >{{i.submit_time}}</td>
+                    <td >{{i.user}}</td>
+                    <td >{{i.problem}}</td>
+                    <td >{{i.language}}</td>
+                    {%if i.result == 'Correct'%}
+                        <td style="color:green;" class="result" id="result-{{i.id}}">{{i.result}}</td>
+                    {%else%}
+                        <td style="color:red;" class="result" id="result-{{i.id}}">{{i.result}}</td>
+                    {%endif%}
+                    
+                </tr>
+            {% endfor %}
+        </table>
+    
+{% endif %}

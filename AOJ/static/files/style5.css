@@ -1,0 +1,449 @@
+
+.main{
+	width: 100%; 
+	padding-top: 10px;
+}
+/*General Menu Styling*/
+
+
+li{
+	list-style: none;}
+
+li a{
+	text-decoration: none;}
+
+.mainnav li{
+	float: left;
+	padding-top: 5px;
+	border-left: 1px dotted #fff;}
+
+.mainnav li:first-child{
+	border: none;} 
+
+
+.mainnav li a{ 
+	display: block;
+	padding: 2px 20px;
+	color: #fff; 
+	font-family: arial;
+	font-size: 16px;}
+/* 
+.mainnav li:hover{
+	transition: ease-in .35s;
+	-moz-transition: ease-in .35s;
+	-webkit-transition: ease-in .35s;} */
+
+.mainnav li:hover a{
+	color:turquoise;
+	transition: ease-in .35s;
+	-moz-transition: ease-in .35s;
+	-webkit-transition: ease-in .35s;
+	text-decoration:none;}
+
+
+.profile li a {
+	color: #fff; 
+	font-family: arial;
+	font-size: 16px;}
+
+.profile li:hover a {
+	color:turquoise;
+	transition: ease-in .35s;
+	-moz-transition: ease-in .35s;
+	-webkit-transition: ease-in .35s;
+	text-decoration:none;}
+
+
+.form-error{ 
+width: 100%;
+border-color:#dd0022;
+border-collapse:collapse;
+border-radius: 5px;
+overflow: hidden;
+box-shadow: 0 0 0 2px #dd0022;
+}
+
+.form-error td{
+color:#dd0022;
+}
+
+/* 
+#submission-filter {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    width: 240px;
+    background: #f8f8f8;
+    border-left: none;
+    margin: 0;
+} */
+
+
+
+.submission-filter {
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    width: 260px;
+    /* height: 400px; */
+    background: #f8f8f8;
+    border-left: none;
+    margin: 0;
+}
+
+.submission-filter h2 {
+    font-weight: 200;
+    font-size: 13px;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 5px 15px;
+    margin-bottom: 12px;
+    border-bottom: none;
+    background: #79aec8;
+    color: #fff;
+}
+
+.submission-filter h3 {
+    font-weight: 400;
+    font-size: 14px;
+    padding: 0 15px;
+    margin-bottom: 10px;
+}
+
+.submission-filter ul {
+    margin: 5px 0;
+    padding: 0 15px 15px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.submission-filter ul:last-child {
+    border-bottom: none;
+    padding-bottom: none;
+}
+
+#submission-filter li {
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.submission-filter a {
+    display: block;
+    color: #047a0e;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+
+.submission-filter li.selected {
+    border-left: 5px solid #eaeaea;
+    padding-left: 10px;
+    margin-left: -15px;
+}
+
+.submission-filter li.selected a {
+    color: blue;
+    text-decoration: #09d1d8;
+}
+
+/* .submission-filter a:focus, .submission-filter a:hover,
+.submission-filter li.selected a:focus, 
+.submission-filter li.selected a:hover { */
+.submission-filter a:hover {
+    color: red;
+    text-decoration: none;
+    text-decoration-line: none;
+}
+
+
+
+/* tab content of submission detail */
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+.tab button{
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 5px 5px;
+    transition: 0.3s;
+}
+
+.tab button:hover{
+    background-color: #ddd;
+}
+
+.tab button.active{
+    background-color: rgb(122, 240, 220);
+}
+
+.tabcontent{
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+
+
+
+/*11*/
+
+/* SELECTOR (FILTER INTERFACE) */
+
+.selector {
+    width: 800px;
+    float: left;
+}
+
+.selector select {
+    width: 380px;
+    height: 17.2em;
+}
+
+.selector-available, .selector-chosen {
+    float: left;
+    width: 380px;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.selector-chosen select {
+    border-top: none;
+}
+
+.selector-available h2, .selector-chosen h2 {
+    border: 1px solid #ccc;
+    border-radius: 4px 4px 0 0;
+}
+
+.selector-chosen h2 {
+    background: #79aec8;
+    color: #fff;
+}
+
+.selector .selector-available h2 {
+    background: #f8f8f8;
+    color: #666;
+}
+
+.selector .selector-filter {
+    background: white;
+    border: 1px solid #ccc;
+    border-width: 0 1px;
+    padding: 8px;
+    color: #999;
+    font-size: 10px;
+    margin: 0;
+    text-align: left;
+}
+
+.selector .selector-filter label,
+.inline-group .aligned .selector .selector-filter label {
+    float: left;
+    margin: 7px 0 0;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    overflow: hidden;
+    line-height: 1;
+}
+
+.selector .selector-available input {
+    width: 320px;
+    margin-left: 8px;
+}
+
+.selector ul.selector-chooser {
+    float: left;
+    width: 22px;
+    background-color: #eee;
+    border-radius: 10px;
+    margin: 10em 5px 0 5px;
+    padding: 0;
+}
+
+.selector-chooser li {
+    margin: 0;
+    padding: 3px;
+    list-style-type: none;
+}
+
+.selector select {
+    padding: 0 10px;
+    margin: 0 0 10px;
+    border-radius: 0 0 4px 4px;
+}
+
+.selector-add, .selector-remove {
+    width: 16px;
+    height: 16px;
+    display: block;
+    text-indent: -3000px;
+    overflow: hidden;
+    cursor: default;
+    opacity: 0.3;
+}
+
+.active.selector-add, .active.selector-remove {
+    opacity: 1;
+}
+
+.active.selector-add:hover, .active.selector-remove:hover {
+    cursor: pointer;
+}
+
+.selector-add {
+    background: url(../Images/admin/selector-icons.svg) 0 -96px no-repeat;
+}
+
+.active.selector-add:focus, .active.selector-add:hover {
+    background-position: 0 -112px;
+}
+
+.selector-remove {
+    background: url(../Images/admin/selector-icons.svg) 0 -64px no-repeat;
+}
+
+.active.selector-remove:focus, .active.selector-remove:hover {
+    background-position: 0 -80px;
+}
+
+a.selector-chooseall, a.selector-clearall {
+    display: inline-block;
+    height: 16px;
+    text-align: left;
+    margin: 1px auto 3px;
+    overflow: hidden;
+    font-weight: bold;
+    line-height: 16px;
+    color: #666;
+    text-decoration: none;
+    opacity: 0.3;
+}
+
+a.active.selector-chooseall:focus, a.active.selector-clearall:focus,
+a.active.selector-chooseall:hover, a.active.selector-clearall:hover {
+    color: #447e9b;
+}
+
+a.active.selector-chooseall, a.active.selector-clearall {
+    opacity: 1;
+}
+
+a.active.selector-chooseall:hover, a.active.selector-clearall:hover {
+    cursor: pointer;
+}
+
+a.selector-chooseall {
+    padding: 0 18px 0 0;
+    background: url(../Images/admin/selector-icons.svg) right -160px no-repeat;
+    cursor: default;
+}
+
+a.active.selector-chooseall:focus, a.active.selector-chooseall:hover {
+    background-position: 100% -176px;
+}
+
+a.selector-clearall {
+    padding: 0 0 0 18px;
+    background: url(../Images/admin/selector-icons.svg) 0 -128px no-repeat;
+    cursor: default;
+}
+
+a.active.selector-clearall:focus, a.active.selector-clearall:hover {
+    background-position: 0 -144px;
+}
+
+/* STACKED SELECTORS */
+
+.stacked {
+    float: left;
+    width: 490px;
+}
+
+.stacked select {
+    width: 480px;
+    height: 10.1em;
+}
+
+.stacked .selector-available, .stacked .selector-chosen {
+    width: 480px;
+}
+
+.stacked .selector-available {
+    margin-bottom: 0;
+}
+
+.stacked .selector-available input {
+    width: 422px;
+}
+
+.stacked ul.selector-chooser {
+    height: 22px;
+    width: 50px;
+    margin: 0 0 10px 40%;
+    background-color: #eee;
+    border-radius: 10px;
+}
+
+.stacked .selector-chooser li {
+    float: left;
+    padding: 3px 3px 3px 5px;
+}
+
+/* .stacked .selector-chooseall, .stacked .selector-clearall {
+    display: none;
+} */
+
+.stacked .selector-add {
+    background: url(../Images/admin/selector-icons.svg) 0 -32px no-repeat;
+    cursor: default;
+}
+
+.stacked .active.selector-add {
+    background-position: 0 -48px;
+    cursor: pointer;
+}
+
+.stacked .selector-remove {
+    background: url(../Images/admin/selector-icons.svg) 0 0 no-repeat;
+    cursor: default;
+}
+
+.stacked .active.selector-remove {
+    background-position: 0 -16px;
+    cursor: pointer;
+}
+
+.selector .help-icon {
+    background: url(../Images/admin/icon-unknown.svg) 0 0 no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    margin: -2px 0 0 2px;
+    width: 13px;
+    height: 13px;
+}
+
+.selector .selector-chosen .help-icon {
+    background: url(../Images/admin/icon-unknown-alt.svg) 0 0 no-repeat;
+}
+
+.selector .search-label-icon {
+    background: url(../Images/admin/search.svg) 0 0 no-repeat;
+    display: inline-block;
+    height: 18px;
+    width: 18px;
+}
+
+#th {
+    padding: 8px;
+}
+

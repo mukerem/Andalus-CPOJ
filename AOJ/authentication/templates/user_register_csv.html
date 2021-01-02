@@ -1,0 +1,16 @@
+{% extends 'admin_base_site.html' %}
+
+{% block title%}User Register CSV{% endblock %}
+{% block content %}  
+{% load static %} 
+    <div class="ur-card">
+        <h1 class="ur-card-title">User register csv</h1>
+        <form  method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            {% include 'horizontal_form.html' %}                
+            <button type="submit" name="button" class="ur-btn">Upload</button>
+        </form>
+        <a href="{% url 'user_register' %}" class="ur-link">register using form?</a>
+    </div>
+{% endblock %}
+

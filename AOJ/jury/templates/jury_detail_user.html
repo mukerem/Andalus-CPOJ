@@ -1,0 +1,135 @@
+{% extends 'jury_base.html'%}
+{% block title%}Detail User{% endblock %}
+
+{% load static %}
+{% block content %}
+
+<br><br>
+<div class="row">
+    <div class="col-md-6" style="margin-left:5%;">
+        <table class="table table-striped">
+                <thead class="table-info">
+                    <tr>
+                        <th ><strong>UID</strong></th>
+                        <th ><strong>username</strong></th>
+                        <th ><strong>name</strong></th>
+                        <th ><strong>category</strong></th>
+                        <th ><strong>detail</strong></th>
+                    
+                    </tr>
+                </thead>
+                {% for i in total_users %}
+                    {% if i.id == this_user.id %}
+                        <tr style="background: rgb(147, 255, 250);">
+                            <td >{{i.id}}</td>
+                            <td >{{i.username}}</td>
+                            <td >{{i.first_name}} {{i.last_name}}</td>
+                            <td >{{i.category}}</td>
+                            <td  >
+                                <a href="{% url 'jury_user_detail' i.id %}" style="margin-left:20px;" title="view detail"> <img src="{% static 'Images/icons/view_detail.png' %}" height="20" width="20"></a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td >{{i.id}}</td>
+                            <td >{{i.username}}</td>
+                            <td >{{i.first_name}} {{i.last_name}}</td>
+                            <td >{{i.category}}</td>
+                            <td  >
+                                <a href="{% url 'jury_user_detail' i.id %}" style="margin-left:20px;" title="view detail"> <img src="{% static 'Images/icons/view_detail.png' %}" height="20" width="20"></a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                      
+                {% endfor %}
+            </table>
+        
+    </div>
+
+    <div class = "container col-4" style="margin-left:5%;">
+            <h4>Detail User: {{this_user.username}}</h4><br>
+            <table class="table table-light" style="width:100%;">
+                <tr>
+                    <td style="width:30%;"> <strong>ID:</strong></td>
+                    <td style="width:70%;">{{this_user.id}}</td>
+                </tr>
+                <tr>
+                    <td style="width:30%;"> <strong>Username:</strong></td>
+                    <td style="width:70%;">{{this_user.username}}</td>
+                </tr>
+                <tr>
+                    <td style="width:30%;"> <strong>First Name:</strong></td>
+                    <td style="width:70%;">{{this_user.first_name}}</td>
+                </tr>
+                <tr>
+                    <td style="width:30%;"> <strong>Last Name:</strong></td>
+                    <td style="width:70%;">{{this_user.last_name}}</td>
+                </tr>
+                <tr>
+                    <td style="width:30%;"> <strong>Sex:</strong></td>
+                    <td style="width:70%;">{{this_user.sex}}</td>
+                </tr>
+                <tr>
+                    <td style="width:30%;"> <strong>E-mail:</strong></td>
+                    <td style="width:70%;">{{this_user.email}}</td>
+                </tr>
+                {% if this_user.phone %}
+                <tr>
+                    <td style="width:30%;"> <strong>phone:</strong></td>
+                    <td style="width:70%;">{{this_user.phone}}</td>
+                </tr>
+                {% endif %}
+                {% if this_user.photo %}
+                <tr>
+                    <td style="width:30%;"> <strong>Photo: </strong></td>
+                    <td style="width:70%;"><img src="{{this_user.photo.url}}" style="width:50%; height:100px;"  /> </td>
+                </tr>
+                {% endif %}
+
+                {% if this_user.campus %}
+                <tr>
+                    <td style="width:30%;"> <strong>Campus:</strong></td>
+                    <td style="width:70%;">{{this_user.campus}}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td style="width:30%;"> <strong>Category:</strong></td>
+                    <td style="width:70%;">{{this_user.category.category}}</td>
+                </tr>
+                <tr>
+                    <td style="width:30%;"> <strong>Roles:</strong></td>
+                    <td style="width:70%;">
+                        <table  style="width:100%;">
+                            {% for i in this_user.role.all %}
+                                <tr><td>{{i.role}}</td></tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:30%;"> <strong>Score:</strong></td>
+                    <td style="width:70%;">{{this_user.score}}</td>
+                </tr>
+                <tr>
+                    <td style="width:30%;"> <strong>Register date:</strong></td>
+                    <td style="width:70%;">{{this_user.register_date}}</td>
+                </tr>
+                                       
+            </table>'
+            
+    </div>
+    
+</div>
+{% endblock %}
+
+   
+
+
+
+
+
+
+
+
+
+

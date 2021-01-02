@@ -1,0 +1,37 @@
+{% extends 'admin_base_site.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block title%}User Register{% endblock %}
+{% block content %}  
+{% load static %} 
+<div style="margin-left: 5%;  margin-right: 25%;" >
+	
+	<div class="card">
+	    <div class="card-header" style="font-size: 18px;"> 
+	        <strong>USER REGISTRATION FORM</strong> 
+	        <ul class="object-tools" style="position: absolute;top: 60px; right: 15px;">
+	           <li> 
+	           	<form  method="POST" enctype="multipart/form-data" novalidate action="{% url 'user_register_csv' %}">
+            		{% csrf_token %}
+            		{% for field in form1.visible_fields %}
+            			<strong>{{ 'CSV file format' }}</strong>
+            			{{ field }}
+                        {{ field.errors }}
+    			    {% endfor %}
+    			    <button type="submit" name="button" class="ur-btn" style="position: absolute;top: 4px; right: 0px;">Upload</button>
+            	</form>
+	           	
+	           </li>
+	       </ul>
+	    </div>
+
+	    <form method="POST" novalidate action="{% url 'user_register' %}">
+	        {% csrf_token %}
+				{% include 'horizontal_form.html' %}
+	            <input type="submit" value="Register" style="margin-left: 27%;">
+	            <input type="hidden" name="next" value="{{ next }}">    
+	    </form>
+	        
+	    </div>
+	</div>
+{% endblock %}

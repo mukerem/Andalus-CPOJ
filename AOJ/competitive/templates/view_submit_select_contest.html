@@ -1,0 +1,61 @@
+{% extends base_page %}
+{% block title%}Select Contest | Andalus{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+<div class="card" style="margin-left: 5%;  margin-right: 5%;margin-top:2%;%" >
+    <div class="card-header titles" style="font-size: 18px;" > 
+	    <strong>SELECT CONTEST</strong> 
+        <ul class="object-tools" style="position: absolute;top: 60px; right: 15px;">
+           <li> </li>
+       </ul>    
+    <table class="table table-striped" >
+        <thead class="table-info">
+            <tr>
+                <th ><strong>CID</strong></th>
+                <th ><strong>Title</strong></th>
+                <th ><strong>Short Name</strong></th>
+                <th ><strong>Start time</strong></th>
+                <th ><strong>End time</strong></th>
+                <th ><strong>Status</strong></th>
+
+            
+            </tr>
+        </thead>
+        {% for i in all_contest %}
+            <tr>
+                <td>{{i.id}}</td>
+                <td ><a href="{% url 'view_submission' i.id %}" style="text-decoration: none;">{{i.title}}</a></td>
+                <td >{{i.short_name}}</td>
+                <td >{{i.start_time}}</td>
+                <td >{{i.end_time}}</td>
+                {% if i.status == "on going" %}
+                    <td style="color:green;">{{i.status}}</td>
+                {% elif i.status == "active" %}
+                    <td style="color:black;">{{i.status}}</td>
+                {% elif i.status == "not active" %}
+                    <td style="color:gray;">{{i.status}}</td>
+                {% elif i.status == "end" %}
+                    <td style="color:blue;">{{i.status}}</td>
+                {% elif i.status == "deactivate" %}
+                    <td style="color:red;">{{i.status}}</td>
+                {% elif i.status == "disable" %}
+                    <td style="color:#a0a;">{{i.status}}</td>
+                {% endif %}
+
+            </tr>
+  
+        {% endfor %}
+        <tr>
+        <td> </td>
+        <td ><a href="{% url 'public_user_submission'  %}" style="text-decoration: none; color:green;"><strong>Public User Submissions</strong></a></td>
+        </tr>
+    </table>
+
+</div>
+
+
+{% endblock %}

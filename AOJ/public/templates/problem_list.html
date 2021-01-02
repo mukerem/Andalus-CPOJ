@@ -1,0 +1,70 @@
+{% extends 'public_base_site.html'%}
+{% block title%}Problem List | Andalus{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-color:#B7B8B0;
+        
+    }
+    {% comment %} td *, td{
+        padding: 10px !important;
+    }  {% endcomment %}
+</style>
+<div class="col-sm-8 col-centered" style="margin-top: 2em;">
+    <h5 class="ur-card-title" style="font-size: 2em;float:left;">Problems </h5>
+    
+    <table class="table table-striped" >
+        <thead class="table-info">
+            <th rowspan="2">Name</th>
+            <th colspan="3" scope="colgroup">submissions</th>
+            <th colspan="3" scope="colgroup">users</th>
+            <th rowspan="2">difficulty</th>
+            <th rowspan="2">submit</th>
+
+            </tr>
+            <tr>
+                <th scope="col">total</th>
+                <th scope="col">acc.</th>
+                <th scope="col">ratio</th>
+                <th scope="col">total</th>
+                <th scope="col">acc.</th>
+                <th scope="col">ratio</th>
+                
+            </tr>
+        </thead>
+
+        {% for i in problem_list %}
+            {% if i.status == "Solved" %}
+            <tr style="background-color: #E3FFE5;">
+            {% elif i.status == "Not Solved" %}
+            <tr style="background-color: #FFE3E3;">
+            {% elif i.status == "Not Try" %}
+            <tr style="background-color: #FFFFFF;">
+            {% endif %}
+
+                <td ><a href="{{i.problem.pdf.url}}" target="_blank" style="text-decoration: none;">{{i.problem.title}} </a></td>
+                <td> {{i.total_submissions}} </td>
+                <td> {{i.accurate_submissions}} </td>
+                <td> {{i.submissions_ratio}}% </td>
+                <td> {{i.total_users}} </td>
+                <td> {{i.accurate_users}} </td>
+                <td> {{i.user_ratio}}% </td>
+                <td> {{i.difficulty}} </td>
+                <td >
+                    <a  title="submit" href="{% url 'submit_specific_problem' i.problem.id %}"> <img src="{% static 'Images/icons/submit-progress.png' %}" height="15" width="15"></a> 
+                </td>
+                
+            </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+{% endblock %}
+
+   

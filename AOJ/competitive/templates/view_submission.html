@@ -1,0 +1,103 @@
+{% extends base_page %}
+{% block title%} View Submission List {% endblock %}
+{% block content %}
+{% load static %}
+
+
+{% if not submission_list %}
+    <div style="margin:2em 10em 0 5em "  id="submission_view">
+        <label style="margin: 0 0 20px; font-weight: 300; font-size: 20px; color: #666;">
+            submission list for contest: {{contest_title}}
+        </label>  
+    </div>
+{% else %} 
+
+<div class="row">
+    <div class="col-md-9" style="margin: 2em 0 0 4em"  id="submission_view">
+        <label style="margin: 0 0 20px; font-weight: 300; font-size: 20px; color: #666;">
+            submission list for contest: {{contest_title}}
+        </label>  
+            
+        <table class="table table-striped">
+            <thead class="table-info">
+            <tr>
+                <th ><strong>SID</strong></th>
+                <th ><strong>Contest time</strong></th>
+                <th ><strong>Real time</strong></th>
+                <th ><strong>User</strong></td></th>
+                <th ><strong>Problem</strong></th>
+                <th ><strong>Language</strong></th>
+                <th ><strong>Result</strong></th>
+                <th ><strong>Detail</strong></th>
+            </tr>
+            </thead>
+            {% for i in submission_list %}
+                <tr class="submit" id="{{i.id}}">
+                    <td >{{i.id}}</td>
+                    <td>{{i.contest_time}}</td>
+                    <td >{{i.submit_time}}</td>
+                    <td >{{i.user}}</td>
+                    <td >{{i.problem}}</td>
+                    <td >{{i.language}}</td>
+                    {%if i.result == 'Correct'%}
+                        <td style="color:green;">{{i.result}}</td>
+                    {%else%}
+                        <td style="color:red;">{{i.result}}</td>
+                    {%endif%}
+                    <td >
+                        <a  title="detail" href="{% url 'submission_detail' i.id %}"> <img src="{% static 'Images/icons/view_detail.png' %}" height="20" width="20"></a>
+                    
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    
+    </div>
+        
+    <div class="col-md-2">
+        <div  class="submission-filter" style="margin-top:5em;">
+            <h2>Filter</h2>
+            <h3>By Problem</h3>
+            <ul id="problem-list">
+                <li class="selected" id="problem-0">
+                    <a href="#"  title="All" onclick="problemFilter(0)">All</a>
+                </li>
+                {% for id, title in all_problems %}
+                    <li id="problem-{{id}}">
+                        <a href="#" title="{{title}}" onclick="problemFilter('{{id}}')">{{title}}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+    <script>
+    function problemFilter(problem_id){
+        var list = document.getElementById("problem-list");
+        var problem_items = list.getElementsByTagName("li");
+        var select_problem = "problem-"+problem_id;
+        var contest_id = '{{contest_id}}'
+        $.ajax({
+            url: "{% url 'view_submission_filter' %}",
+            data: {
+                'problem_id': problem_id,
+                'contest_id': contest_id,
+            },
+            success: function (data) {
+                $('#submission_view').html(data);
+                for (var i=0; i < problem_items.length; ++i){
+                     if (problem_items[i].id == select_problem){
+                        problem_items[i].className = "selected";
+                     }
+                     else{
+                        problem_items[i].className = "";
+                     }
+                }
+            }
+        });
+    }
+    
+    </script>
+{% endblock %}

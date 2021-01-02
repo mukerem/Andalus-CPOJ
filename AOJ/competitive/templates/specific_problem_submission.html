@@ -1,0 +1,65 @@
+{% extends base_page %}
+
+{% block title%} Specific Submissions {% endblock %}
+{% block content %}
+{% load static %}
+    {% if not submit %}
+        <div style="margin:2em 10em 0 5em "  id="submission_view">
+            <h5 class="ur-card-title" style="font-size: 1.5em;">There is no submission</h5>
+        </div>
+    {% else %} 
+    <div class="row">
+        <div class="col-sm-4 col-centered" style="margin-top: 2em; margin-left:5em;">
+            <table class="table table-light" style="margin-top: 4em;">
+                <tr>
+                    <td ><strong>user: </strong></td>
+                    <td >{{submit.0.user}}</td>
+                </tr>
+                <tr>
+                    <td ><strong>contest: </strong></td>
+                    <td >{{submit.0.contest}}</td>
+                </tr>
+                <tr>
+                    <td ><strong>problem: </strong></td>
+                    <td >{{submit.0.problem}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-sm-7 col-centered" style="margin-top: 2em;">
+            {% if base_page == "admin_base_site.html" %}
+                <a class="btn btn-success" href="{% url 'multi_rejudge' submit.0.problem.id contest_id submit.0.user.id %}" style="float: right; width: 200px;color:#fff;">all rejudge</a>
+            {% endif %}
+            <table class="table table-striped" style="margin-top: 4em;"> 
+            <thead class="table-info">
+            <tr>
+                <th ><strong>SID</strong></th>
+                <th ><strong>Contest time</strong></th>
+                <th ><strong>Real time</strong></th>
+                <th ><strong>Language</strong></th>
+                <th ><strong>Result</strong></th>
+                <th ><strong>Detail</strong></th>
+            </tr>
+            </thead>
+            {% for i in submit %}
+                <tr>
+                    <td >{{i.id}}</td>
+                    <td >{{i.contest_time}}</td>
+                    <td >{{i.submit_time}}</td>
+                    <td >{{i.language}}</td>
+                    {%if i.result == 'Correct'%}
+                        <td style="color:green;">{{i.result}}</td>
+                    {%else%}
+                        <td style="color:red;">{{i.result}}</td>
+                    {%endif%}
+                    <td >
+                        <a  title="detail" href="{% url 'submission_detail' i.id %}"> <img src="{% static 'Images/icons/view_detail.png' %}" height="20" width="20"></a>
+                    
+                    </td>
+                </tr>
+            {% endfor %}
+            </table>
+        
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

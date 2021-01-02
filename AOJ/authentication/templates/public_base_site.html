@@ -1,0 +1,374 @@
+{% load i18n static %}<!DOCTYPE html>
+
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'assets/vendors/bootstrap/dist/css/bootstrap.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}">
+{% if not is_popup and is_nav_sidebar_enabled %}
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/nav_sidebar.css" %}">
+  <script src="{% static 'admin/js/nav_sidebar.js' %}" defer></script>
+{% endif %}
+{% block extrastyle %}{% endblock %}
+{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}">{% endif %}
+{% block extrahead %}{% endblock %}
+{% block responsive %}
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive.css" %}">
+    {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive_rtl.css" %}">{% endif %}
+{% endblock %}
+{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
+<style type="text/css">
+    .header-item{
+      font-size: 14px; 
+      padding: 13px 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .hover{ 
+        background-color: #00B159;
+        padding: 15px 5px;
+    }
+    .time{
+    padding: 0px;
+    align-items: center;
+    align-self: flex-end;
+    font-weight: bold;
+    color: #000000;
+    display: flex;
+  }
+  .time li{
+    margin: 4px 5px 0 0;
+    list-style: none;
+  }
+  .time p{
+    margin: 4px 5px 0 0;
+    font-size: 20px;
+  }
+  .time li select{
+    background-color: #ffffff5b;
+    border: 2px solid #000000;
+    color: #000000;
+    font-weight: bold;
+    }
+    .PSL{
+      text-decoration: none;
+      background-color: #708090;
+      color: black;
+    }
+    .PSL a:hover {
+      background-color: #708090;
+      text-decoration: none;
+    }
+  </style>
+  
+</head>
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+  data-admin-utc-offset="{% now "Z" %}">
+
+<!-- Container -->
+<div id="container">
+
+
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+        {% block branding %}
+        <h1>
+        {{ "" }}</h1>
+        {% endblock %}
+        </div>
+        {% block usertools %}
+        <div class="" style="text-align: right;">
+          <a href="{% url 'public_submit' %}" class="header-item {{submit}}" style="text-decoration: none;">Submit</a>
+          <a href="{% url 'public_problem' %}" class="header-item {{pro}}" style="text-decoration: none;">Problem</a>
+          <a href="{% url 'ranklists' %}" class="header-item {{rank}}" style="text-decoration: none;">Ranklists</a>
+          <a class="dropdown-toggle" style="text-decoration: none; color: #eeff04f3;" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            &rsaquo; {{ request.user.username|upper }}</a>
+            <div class="dropdown-menu PSL" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+          </div>
+     
+
+        </div>
+       
+        {% endblock %}
+        {% block nav-global %}{% endblock %}
+    </div>
+    <!-- END Header -->
+    {% if messages %}
+      <ul class="messagelist">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }} </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    {% block breadcrumbs %}
+    {% endblock %}
+
+    <div class="main shifted" id="main">
+      {% if not is_popup and is_nav_sidebar_enabled %}
+        {% block nav-sidebar %}
+          {% include "admin/nav_sidebar.html" %}
+        {% endblock %}
+      {% endif %}
+      <div class="content">
+        {% block messages %}
+
+        {% endblock messages %}
+        <!-- Content -->
+        <div id="content" class="{% block coltype %}colM{% endblock %}">
+          {% block pretitle %}{% endblock %}
+          {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+          {% block content %}
+            {% block object-tools %}{% endblock %}
+            {{ content }}
+          {% endblock %}
+          {% block sidebar %}{% endblock %}
+          <br class="clear">
+        </div>
+        <!-- END Content -->
+        {% block footer %}<div id="footer"></div>{% endblock %}
+      </div>
+    </div>
+</div>
+<!-- END Container -->
+        <script src="{% static 'files/bootstrap/jquery/jquery-3.3.1.min.js' %}"> </script>
+        <script src="{% static 'assets/js/app.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/popper.js/dist/umd/popper.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/bootstrap/dist/js/bootstrap.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/metisMenu/dist/metisMenu.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js' %}" type="text/javascript"></script>
+        <!-- PAGE LEVEL PLUGINS-->
+        <script src="{% static 'assets/vendors/chart.js/dist/Chart.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap-2.0.3.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap-us-aea-en.js' %}" type="text/javascript"></script>
+        <!-- CORE SCRIPTS-->
+
+        <script src="{% static 'files/main.js' %}"></script>
+        {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script> {% endcomment %}
+        
+        <script>
+            function popupOpenClose(popup) {
+                /* Add div inside popup for layout if one doesn't exist */
+                if ($(".wrapper").length == 0){
+                    $(popup).wrapInner("<div class='wrapper'></div>");
+                }
+                
+                /* Open popup */
+                $(popup).show();
+    
+                /* Close popup if user clicks on background */
+                $(popup).click(function(e) {
+                    if ( e.target == this ) {
+                        if ($(popup).is(':visible')) {
+                            $(popup).hide();
+                        }
+                    }
+                });
+    
+                /* Close popup and remove errors if user clicks on cancel or close buttons */
+                $(popup).find("button[name=close]").on("click", function() {
+                    if ($(".formElementError").is(':visible')) {
+                        $(".formElementError").remove();
+                    }
+                    $(popup).hide();
+                });
+            }
+    
+            $(document).ready(function () {
+                $("[data-js=open]").on("click", function() {
+                    popupOpenClose($(".popup"));
+                });
+            });
+            var clarificationCount = document.querySelectorAll('.clarification').length;
+            var submissionsCount = document.querySelectorAll('.submission').length;
+            for(let i=1; i<submissionsCount+1; i++){
+                 function popupCO(popup) {
+                    /* Add div inside popup for layout if one doesn't exist */
+                    if ($(".wrapper").length == 0){
+                        $(popup).wrapInner("<div class='wrapper'></div>");
+                    }
+                    
+                    /* Open popup */
+                    $(popup).show();
+        
+                    /* Close popup if user clicks on background */
+                    $(popup).click(function(e) {
+                        if ( e.target == this ) {
+                            if ($(popup).is(':visible')) {
+                                $(popup).hide();
+                            }
+                        }
+                    });
+        
+                    /* Close popup and remove errors if user clicks on cancel or close buttons */
+                    $(popup).find("button[name=close]").on("click", function() {
+                        if ($(".formElementError").is(':visible')) {
+                            $(".formElementError").remove();
+                        }
+                        $(popup).hide();
+                    });
+                }
+        
+                $(document).ready(function () { 
+                    $("[data-js=open"+i+"]").on("click", function() {
+                        popupCO($(".popup"+i));
+                        
+                    });
+                });
+            } 
+            for(let i=1; i<clarificationCount+1; i++) {
+
+                function popupCO(popup) {
+                    /* Add div inside popup for layout if one doesn't exist */
+                    if ($(".wrapper").length == 0){
+                        $(popup).wrapInner("<div class='wrapper'></div>");
+                    }
+                    
+                    /* Open popup */
+                    $(popup).show();
+        
+                    /* Close popup if user clicks on background */
+                    $(popup).click(function(e) {
+                        if ( e.target == this ) {
+                            if ($(popup).is(':visible')) {
+                                $(popup).hide();
+                            }
+                        }
+                    });
+        
+                    /* Close popup and remove errors if user clicks on cancel or close buttons */
+                    $(popup).find("button[name=close]").on("click", function() {
+                        if ($(".formElementError").is(':visible')) {
+                            $(".formElementError").remove();
+                        }
+                        $(popup).hide();
+                    });
+                }
+        
+                $(document).ready(function () { 
+                    $("[data-js=open"+i+"]").on("click", function() {
+                        popupCO($(".popup"+i));
+                        
+                    });
+                });
+            }
+            function popupOpenClose(popup) {
+                /* Add div inside popup for layout if one doesn't exist */
+                if ($(".wrapper").length == 0){
+                    $(popup).wrapInner("<div class='wrapper'></div>");
+                }
+                
+                /* Open popup */
+                $(popup).show();
+    
+                /* Close popup if user clicks on background */
+                $(popup).click(function(e) {
+                    if ( e.target == this ) {
+                        if ($(popup).is(':visible')) {
+                            $(popup).hide();
+                        }
+                    }
+                });
+    
+                /* Close popup and remove errors if user clicks on cancel or close buttons */
+                $(popup).find("button[name=close]").on("click", function() {
+                    if ($(".formElementError").is(':visible')) {
+                        $(".formElementError").remove();
+                    }
+                    $(popup).hide();
+                });
+            }
+    
+            $(document).ready(function () {
+                $("[data-js=open]").on("click", function() {
+                    popupOpenClose($(".popup"));
+                });
+            });
+            var clarificationCount = document.querySelectorAll('.clarification').length;
+            var submissionsCount = document.querySelectorAll('.submission').length;
+            for(let i=1; i<submissionsCount+1; i++){
+                 function popupCO(popup) {
+                    /* Add div inside popup for layout if one doesn't exist */
+                    if ($(".wrapper").length == 0){
+                        $(popup).wrapInner("<div class='wrapper'></div>");
+                    }
+                    
+                    /* Open popup */
+                    $(popup).show();
+        
+                    /* Close popup if user clicks on background */
+                    $(popup).click(function(e) {
+                        if ( e.target == this ) {
+                            if ($(popup).is(':visible')) {
+                                $(popup).hide();
+                            }
+                        }
+                    });
+        
+                    /* Close popup and remove errors if user clicks on cancel or close buttons */
+                    $(popup).find("button[name=close]").on("click", function() {
+                        if ($(".formElementError").is(':visible')) {
+                            $(".formElementError").remove();
+                        }
+                        $(popup).hide();
+                    });
+                }
+        
+                $(document).ready(function () { 
+                    $("[data-js=open"+i+"]").on("click", function() {
+                        popupCO($(".popup"+i));
+                        
+                    });
+                });
+            } 
+            for(let i=1; i<clarificationCount+1; i++) {
+
+                function popupCO(popup) {
+                    /* Add div inside popup for layout if one doesn't exist */
+                    if ($(".wrapper").length == 0){
+                        $(popup).wrapInner("<div class='wrapper'></div>");
+                    }
+                    
+                    /* Open popup */
+                    $(popup).show();
+        
+                    /* Close popup if user clicks on background */
+                    $(popup).click(function(e) {
+                        if ( e.target == this ) {
+                            if ($(popup).is(':visible')) {
+                                $(popup).hide();
+                            }
+                        }
+                    });
+        
+                    /* Close popup and remove errors if user clicks on cancel or close buttons */
+                    $(popup).find("button[name=close]").on("click", function() {
+                        if ($(".formElementError").is(':visible')) {
+                            $(".formElementError").remove();
+                        }
+                        $(popup).hide();
+                    });
+                }
+        
+                $(document).ready(function () { 
+                    $("[data-js=open"+i+"]").on("click", function() {
+                        popupCO($(".popup"+i));
+                        
+                    });
+                });
+            }
+        </script>
+</body>
+</html>
+
+
+
+
+

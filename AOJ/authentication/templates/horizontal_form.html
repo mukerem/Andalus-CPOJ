@@ -1,0 +1,42 @@
+{% load widget_tweaks %}
+{% load static %}
+
+{% if form.non_field_errors %}
+    <table class="form-error">
+        {% for error in form.non_field_errors%}
+        <tr><td><b> {{ error}}</b></td></tr>
+        {% endfor %}
+    </table>
+    <br>
+{% endif %}
+
+    {% for field in form.visible_fields %}
+
+        <div class="row form-group"  style="margin: 10px 0 0 10px;">
+            <div class="col-3">
+                {% if field.field.required%}
+                    <strong>{{ field.label_tag }}</strong>
+                {% else %}
+                    {{ field.label_tag }}
+                {% endif %}
+            </div>
+            <div class="col-5">
+                {% if form.is_bound %}
+                    {% if field.errors %}
+                        {% render_field field class="form-field is-invalid" %}
+                        {{ field.errors }}
+                    {% else %}
+                        {% render_field field class="form-field is-valid" %}
+                    {% endif %}
+                {% else %}
+                    {% render_field field class="form-field" %}
+                {% endif %}
+                                
+
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+        </div>
+        
+    {% endfor %}

@@ -1,0 +1,29 @@
+{% extends 'admin_base_site.html'%}
+{% block title%}Setting | Andalus{% endblock %}
+
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+<div class="col-sm-4 col-centered" style="margin-top: 2em; margin-left:5em;" >
+    <h5 class="ur-card-title" style="font-size: 2em;">setting </h5>
+    
+    <table class="table table-light" >
+        <thead class="table-info">
+            <tr>
+                <th ><strong>setting name</strong></th>
+            </tr>
+        </thead>
+        <tr>
+            <td><a href="{% url 'campus_list' %}" style="text-decoration: none;">campus list </a></td>
+        </tr>
+        <tr>
+            <td><a href="{% url 'score_values' %}" style="text-decoration: none;">score values </a></td>
+        </tr>
+        <tr>
+            <td><a href="{% url 'language_list' %}" style="text-decoration: none;">language list </a></td>
+        </tr>
+    </table>
+
+</div>
+{% endblock %}

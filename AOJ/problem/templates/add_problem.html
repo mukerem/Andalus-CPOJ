@@ -1,0 +1,33 @@
+{% extends 'admin_base_site.html' %}
+
+{% block title%}Add Problem{% endblock %}
+{% block content %}  
+{% load static %} 
+<div style="margin-left: 5%;  margin-right: 5%;" >
+	
+    <div class="card">
+        <div class="card-header" style="font-size: 18px;"> 
+            <strong>ADD PROBLEM </strong> 
+            <ul class="object-tools" style="position: absolute;top: 60px; right: 15px;">
+                <li> 
+                    <form  method="POST" enctype="multipart/form-data" novalidate action="{% url 'add_problem_zip' %}">
+                     {% csrf_token %}
+                     {% for field in form1.visible_fields %}
+                         <strong>{{ 'Zip file format' }}</strong>
+                         {{ field }}
+                         {{ field.errors }}
+                     {% endfor %}
+                     <button type="submit" name="button" class="ur-btn" style="position: absolute;top: 4px; right: 0px;">Upload</button>
+                 </form>
+                    
+                </li>
+            </ul>
+        </div>
+            <form method="POST"  enctype="multipart/form-data" novalidate action="{% url 'add_problem' %}">
+                {% csrf_token %}
+                {% include 'horizontal_form.html' %}
+                <input type="submit" name="submit" value="save" style="margin: 0 0 30px 50%;">
+            </form>
+    </div>
+</div>
+{% endblock %}

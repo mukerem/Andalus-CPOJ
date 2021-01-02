@@ -1,0 +1,14 @@
+{% extends 'admin_base_site.html'%}
+{% block title%}Delete Contest{% endblock %}
+{% block content %}
+    <br>
+    <div class="col-sm-8" style="margin-left:100px;">
+
+    <h3>Are you sure?</h3><br>
+
+    <h5>Are you sure you want to delete the contest {{contest.title}}?</h5>
+    <br><br><br>
+    <a class="btn btn-danger" href="{% url 'delete_contest_done' contest.id  %}" style="margin-left:15px;color:#fff;">Yes,I'm sure</a>
+    <a class="btn btn-secondary" href="{{request.META.HTTP_REFERER}}" style="margin-left:15px;color:#fff;">No, take me back</a>
+    </div>
+{% endblock %}

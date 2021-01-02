@@ -1,0 +1,158 @@
+{% extends 'public_base_site.html'%}
+{% block title%}Rank List | Andalus{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+
+        <link rel="stylesheet" href="{% static 'files/ranklist.css' %}" type="text/css">
+
+<div class="wrapper col-sm-8 col-centered">
+    <div class="titles">
+        <div class="title">User ranklist</div>
+        <div class="title">University ranklist</div>
+        <div class="title">Country ranklist</div>
+
+    </div>
+    <div class="content">
+        <div class="item">
+            <h3 class="table-name">User Rank Lists </h3>
+            
+            <table class="table table-light" >
+                
+                <thead class="table-info">
+                    <th >Rank</th>
+                    <th >User</th>
+                    <th >University</th>
+                    <th >Country</th>
+                    <th >Score</th>
+                    
+                </thead>
+            
+                {% for i in user_ranklists %}
+                    <tr>
+                        
+                        <td> {{i.rank}} </td>
+                        <td> {{i.user.name}} </td>
+                        <td class="td right team">
+                            <img src="{{i.user.campus.logo.url}}" style = "height:30px; width:30px;margin-right:1em;" >
+                            {{i.user.campus.name}}
+                        </td>
+                        <td> {{i.user.campus.country}} </td>
+                        <td> {{i.point}} </td>
+                    
+                    </tr>
+                {% endfor %}
+            </table>
+        </div> 
+
+        <div class="item">
+            <h3 class="table-name">University Rank Lists </h3>
+            
+            <table class="table table-light" >
+                
+                <thead class="table-info">
+                    <th >Rank</th>
+                    <th >University</th>
+                    <th >Country</th>
+                    <th >Users</th>
+                    <th >Score</th>
+                    
+                </thead>
+            
+                {% for i in university_ranklists %}
+                    <tr>
+                        
+                        <td> {{i.rank}} </td>
+                        <td class="td right team">
+                            <img src="{{i.university.logo.url}}" style = "height:30px; width:30px;margin-right:1em;" >
+                            {{i.university.name}}
+                        </td>
+                        <td> {{i.university.country}} </td>
+                        <td> {{i.user_count}} </td>
+
+                        <td> {{i.point}} </td>
+                    
+                    </tr>
+                {% endfor %}
+            </table>
+        </div> 
+
+        <div class="item">
+            <h3 class="table-name">Country Rank Lists </h3>
+            
+            <table class="table table-light" >
+                
+                <thead class="table-info">
+                    <th >Rank</th>
+                    <th >Country</th>
+                    <th >Users</th>
+                    <th >Universities</th>
+                    <th >Score</th>
+                    
+                </thead>
+            
+                {% for i in country_ranklists %}
+                    <tr>
+                        
+                        <td> {{i.rank}} </td>
+                        <td> {{i.country}} </td>
+                        <td> {{i.user_count}} </td>
+                        <td> {{i.university_count}} </td>
+                        <td> {{i.point}} </td>
+                    
+                    </tr>
+                {% endfor %}
+            </table>
+        </div> 
+    </div>
+</div>
+   
+<script>
+// tab for ranklist
+    function openRankList(evt, type) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        document.getElementById(type).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+
+    var titles = document.querySelectorAll('.title');
+    var items = document.querySelectorAll('.item');
+
+    items[0].style.display = 'block';
+    titles[0].setAttribute('data-status', 'active');
+    
+    for(let i=0; i<titles.length; i++) {
+        let status = true;
+
+        
+        titles[i].addEventListener('click', function(event) {
+            if(status) {
+                items[i].style.display = 'block';
+                titles[i].setAttribute('data-status', 'active');
+                
+                for(let j=0; j<titles.length; j++) {
+                    if(titles[j] != event.target) {
+                        items[j].style.display = 'none';
+                        titles[j].removeAttribute('data-status');
+                    }
+                }
+
+                status = true;
+            }
+        });
+    }
+</script>
+
+{% endblock %}

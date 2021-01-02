@@ -1,0 +1,37 @@
+
+{% extends 'admin_base_site.html' %}
+
+{% block title%}New Clarification Request | Andalus {% endblock %}
+{% block content %}  
+{% load static %} 
+
+{% if not request.session.active_contest_admin %}
+    <div class="container nocontest">
+        <h5 class="ur-card-title" style="font-size: 2em;">There is no active contest</h5>
+    </div>
+{% else %}
+<div style="margin-left: 15%;  margin-right: 35%;" >
+	
+	<div class="card">
+	    <div class="card-header" style="font-size: 18px;"> 
+	        <strong>NEW CLARIFICATION</strong> 
+	        <ul class="object-tools" style="position: absolute;top: 60px; right: 15px;">
+	           <li> 
+	           </li>
+	       </ul>
+	    </div>
+
+
+        <form enctype="multipart/form-data" method="post" novalidate>
+            {% csrf_token %}
+            {% include 'horizontal_form_5.html' %}
+            
+            <input type="submit" value="Send" style="margin-left: 1%;">
+	        <input type="hidden" name="next" value="{{ next }}">    
+        </form>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+

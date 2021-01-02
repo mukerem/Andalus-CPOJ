@@ -1,0 +1,67 @@
+{% extends 'admin_base_site.html' %}
+
+{% block title%}Edit Contest{% endblock %}
+{% block content %}  
+{% load static %} 
+{% load widget_tweaks %}
+<script  src="{% static 'files/jsi18n.js' %}"> </script>   
+
+<div class="card" style="margin-left: 5%;  margin-right: 5%;">
+    <div class="card-header" style="font-size: 18px;"> 
+        <strong>EDIT CONTEST </strong> 
+        <ul class="object-tools" style="position: absolute;top: 60px; right: 15px;">
+            <li> 
+                <a href="{% url 'delete_contest' contest_id%}">delete contest?</a>
+            </li>
+        </ul>
+    </div>
+    {% if form.non_field_errors %}
+        <table class="form-error">
+            {% for error in form.non_field_errors%}
+            <tr><td><b> {{ error}}</b></td></tr>
+            {% endfor %}
+        </table>
+        <br>
+    {% endif %}
+    {{form.media}}
+    <div   style="margin: 10px;">
+        <form  method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+                
+            <div class="row form-group">
+                {% for field in form.visible_fields %}
+                <div class="col-1">
+                    {% if field.field.required%}
+                        <strong>{{ field.label_tag }}</strong>
+                    {% else %}
+                        {{ field.label_tag }}
+                    {% endif %}
+                </div>
+            
+                <div class="col-5">
+                    {% if form.is_bound %}
+                        {% if field.errors %}
+                            {% render_field field class="form-field is-invalid" %}
+                            {{ field.errors }}
+                        {% else %}
+                            {% render_field field class="form-field is-valid" %}
+                        {% endif %}
+                    {% else %}
+                        {% render_field field class="form-field" %}
+                    {% endif %}
+                                    
+
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            
+    
+            <input type="submit" name="submit" value="Update" style="float: right; margin-right:10%;">
+        </form>
+    </div>
+</div>
+
+{% endblock %}

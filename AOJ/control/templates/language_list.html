@@ -1,0 +1,29 @@
+{% extends 'admin_base_site.html'%}
+{% block title%}Language List | Andalus{% endblock %}
+ 
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+<div class="col-sm-6 col-centered" style="margin-top: 2em;">
+    <h5 class="ur-card-title" style="font-size: 2em;">language list 
+        <a class = "btn btn-primary" href="{% url 'language_register' %}" style="float:right;color:#fff;">add langugae</a>
+    </h5>
+    <table class="table table-striped">
+        <thead class="table-info">
+            <tr>
+                <th ><strong>Name</strong></th>
+                <th ><strong>Extension</strong></th>
+            </tr>
+        </thead>
+        {% for i in language_list %}
+            <tr>
+                <td ><a href="{% url 'edit_language' i.id %}" style="text-decoration: none;">{{i.name}}</a></td>
+                <td >{{i.extension}}</td>
+            </tr>
+        {% endfor %}
+    </table>        
+</div>
+
+{% endblock %}
+
+   

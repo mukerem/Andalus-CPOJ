@@ -1,0 +1,87 @@
+{% extends 'jury_base_site.html'%}
+{% block title%}User List | Andalus{% endblock %}
+
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+{% if contestant_user%}
+<div class="col-sm-8 col-centered" style="margin-top: 2em;">
+    <h5 class="ur-card-title" style="font-size: 2em;">contestant user list</h5>
+    <table class="table table-striped">
+        <thead class="table-info">
+            <tr>
+                <th ><strong>id</strong></th>
+                <th ><strong>username</strong></th>
+                <th ><strong>name</strong></th>
+                <th ><strong>e-mail</strong></th>
+                <th ><strong>campus</strong></th>
+            </tr>
+        </thead>
+        {% for i in contestant_user %}
+            <tr>
+                <td >{{i.id}}</td>
+                <td >{{i.username}}</td>
+                <td >{{i.name}}</td>
+                <td >{{i.email}}</td>
+                <td >{{i.campus}}</td>
+            </tr>
+        {% endfor %}
+    </table>        
+</div>
+{% endif %}
+
+{% if admin_user%}
+<div class="col-sm-8 col-centered" style="margin-top: 5em;">
+    <h5 class="ur-card-title" style="font-size: 2em;">admin user list</h5>
+    <table class="table table-striped">
+        <thead class="table-info">
+            <tr>
+                <th ><strong>id</strong></th>
+                <th ><strong>username</strong></th>
+                <th ><strong>name</strong></th>
+                <th ><strong>e-mail</strong></th>
+                <th ><strong>campus</strong></th>
+            </tr>
+        </thead>
+        {% for i in admin_user %}
+            <tr>
+                <td >{{i.id}}</td>
+                <td >{{i.username}}</td>
+                <td >{{i.name}}</td>
+                <td >{{i.email}}</td>
+                <td >{{i.campus}}</td>
+            </tr>
+        {% endfor %}
+    </table>        
+</div>
+{% endif %}
+
+{% if jury_user%}
+<div class="col-sm-8 col-centered" style="margin-top: 5em;">
+    <h5 class="ur-card-title" style="font-size: 2em;">jury user list</h5>
+    <table class="table table-striped">
+        <thead class="table-info">
+            <tr>
+                <th ><strong>id</strong></th>
+                <th ><strong>username</strong></th>
+                <th ><strong>name</strong></th>
+                <th ><strong>e-mail</strong></th>
+                <th ><strong>campus</strong></th>
+            </tr>
+        </thead>
+        {% for i in jury_user %}
+            <tr>
+                <td >{{i.id}}</td>
+                <td >{{i.username}}</td>
+                <td >{{i.name}}</td>
+                <td >{{i.email}}</td>
+                <td >{{i.campus}}</td>
+            </tr>
+        {% endfor %}
+    </table>        
+</div>
+{% endif %}
+{% endblock %}
+
+   

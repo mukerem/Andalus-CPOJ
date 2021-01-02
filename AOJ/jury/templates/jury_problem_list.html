@@ -1,0 +1,37 @@
+{% extends 'jury_base_site.html'%}
+{% block title%}Problem List | Andalus{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+
+<div class="col-sm-6 col-centered" style="margin-top: 2em;">
+    <h5 class="ur-card-title" style="font-size: 2em;">problem list</h5>
+    <table class="table table-striped" >
+        <thead class="table-info">
+            <tr>
+                <th ><strong>id</strong></th>
+                <th ><strong>short name</strong></th>
+                <th ><strong>title</strong></th>
+                <th ><strong>time limit</strong></th>
+                <th ><strong>pdf</strong></th>
+            
+            </tr>
+        </thead>
+        {% for i in problem %}
+            <tr>
+                <td >{{i.id}}</td>
+                <td >{{i.short_name}}</td>
+                <td >{{i.title}}</td>
+                <td >{{i.time_limit}}</td>
+                <td>
+                    <a href="{{i.pdf.url}}" target="_blank" style="margin-right:20px;" title="pdf"> <img src="{% static 'Images/icons/problem.png' %}" height="20" width="20"></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
+
+   

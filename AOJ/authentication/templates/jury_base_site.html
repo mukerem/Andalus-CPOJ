@@ -1,0 +1,203 @@
+{% load i18n static %}<!DOCTYPE html>
+
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'assets/vendors/bootstrap/dist/css/bootstrap.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}">
+{% if not is_popup and is_nav_sidebar_enabled %}
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/nav_sidebar.css" %}">
+  <script src="{% static 'admin/js/nav_sidebar.js' %}" defer></script>
+{% endif %}
+{% block extrastyle %}{% endblock %}
+{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}">{% endif %}
+{% block extrahead %}{% endblock %}
+{% block responsive %}
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive.css" %}">
+    {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% static " admin/css/responsive_rtl.css" %}">{% endif %}
+{% endblock %}
+{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
+
+<style type="text/css">
+  .header-item{
+    font-size: 14px; 
+    padding: 13px 5px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .hover{ 
+    background-color: #00B159;
+    padding: 15px 5px;
+  }
+  .time{
+    padding: 0px;
+    align-items: center;
+    align-self: flex-end;
+    font-weight: bold;
+    color: #000000;
+    display: flex;
+  }
+  .time li{
+    margin: 4px 5px 0 0;
+    list-style: none;
+  }
+  .time p{
+    margin: 4px 5px 0 0;
+    font-size: 20px;
+  }
+  .time li select{
+    background-color: #ffffff5b;
+    border: 2px solid #000000;
+    color: #000000;
+    font-weight: bold;
+  }
+  .PSL{
+    text-decoration: none;
+    background-color: #708090;
+  }
+  .PSL a:hover {
+    background-color: #708090;
+  }
+</style>
+
+
+</head>
+
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+  data-admin-utc-offset="{% now "Z" %}">
+
+<!-- Container -->
+<div id="container">
+
+    {% if not is_popup %}
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+          {% block branding %}
+            <h1> {{ "CPO-Judge" }}</h1>
+          {% endblock %}
+        </div>
+        {% block usertools %}
+        <div class="" style="text-align: right;">
+          {% comment %} <a href="{% url 'homepage' %}" class="header-item {{myicpc}}" style="text-decoration: none;">MyICPC</a> {% endcomment %}
+          <a href="{% url 'jury_view_user' %}" class="header-item {{user}}" style="text-decoration: none;">User</a>
+          <a href="{% url 'jury_view_problem' %}" class="header-item {{pro}}" style="text-decoration: none;">Problem</a>
+          <a href="{% url 'jury_contest_list' %}" class="header-item {{cont}}" style="text-decoration: none;">Contest</a>
+          <a href="{% url 'jury_scoreboard' %}" class="header-item {{scor}}" style="text-decoration: none;">Scoreboard</a>
+          <a href="{% url 'view_submit_contest_select' %}" class="header-item {{submit}}" style="text-decoration: none;">Submission</a>
+          <a href="{% url 'view_jury_clarification' %}" class="header-item {{clar}}" style="text-decoration: none;">Clarification</a>
+          <a href="{% url 'rating' %}" class="header-item {{rating}}" style="text-decoration: none;">Leaderboard</a>
+         
+          
+          <a class="dropdown-toggle" style="text-decoration: none; color: #eeff04f3;" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            &rsaquo; {{ request.user.username|upper }}</a>
+          <div class="dropdown-menu PSL" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+          </div>
+        </div>
+       
+        {% endblock %}
+        {% block nav-global %}{% endblock %}
+    </div>
+    <!-- END Header -->
+    {% if messages %}
+      <ul class="messagelist">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }} </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+    <div class="time">
+      <p id="countdown"> </p>
+      {% if request.session.all_active_contest_list_admin %}
+      <li id="contest_selector" class="ur-nav-item">
+            <select id="id_contest" name="contest">
+              {% for id, title in request.session.all_active_contest_list_admin %}
+                  {% if id|slugify ==  request.session.active_contest_admin %}
+                      <option   value="{{id}}" selected="selected" > {{title|upper}}</option>
+                  {% else %}
+                      <option   value="{{id}}">{{title}}</option>
+                  {%endif%}
+              {%endfor%}
+          </select> 
+      </li>
+      {%endif%}
+    </div>
+    {% endif %}
+    {% block breadcrumbs %}
+    {% endblock %}
+    {% endif %}
+
+    
+    <div class="content-wrapper">
+      {% comment %} {% block message %}
+          <br>
+          {% include 'message.html' %}
+      {% endblock%} {% endcomment %}
+      {% block content %}
+      
+      {% endblock %}
+  </div>
+  
+</div>
+<!-- <footer>
+  <div class="footer-copyright text-center py-3" style="background-color: darkslategrey; color: white; position: fixed; right: 0; bottom:0; width:100%;">© 2020 CPO Judge    
+  </div>
+</footer> -->
+<!-- END Container -->
+{% if request.session.current_contest_start_time and request.session.current_contest_end_time %}
+    <script>
+        var countDownDate_start = "{{request.session.current_contest_start_time}}";
+        var countDownDate_end = "{{request.session.current_contest_end_time}}";
+        
+    </script>
+{% else %}
+    <script>
+        var countDownDate_start = 0;
+        var countDownDate_end = 0;
+    </script>
+{% endif %}
+        <script  type="text/javascript" src="{% static 'files/countdown.js' %}"></script>
+        <script src="{% static 'files/bootstrap/jquery/jquery-3.3.1.min.js' %}"> </script>
+        <script src="{% static 'assets/js/app.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/popper.js/dist/umd/popper.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/bootstrap/dist/js/bootstrap.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/metisMenu/dist/metisMenu.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js' %}" type="text/javascript"></script>
+        <!-- PAGE LEVEL PLUGINS-->
+        <script src="{% static 'assets/vendors/chart.js/dist/Chart.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap-2.0.3.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js' %}" type="text/javascript"></script>
+        <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap-us-aea-en.js' %}" type="text/javascript"></script>
+        <!-- CORE SCRIPTS-->
+
+        
+        <script src="{% static 'files/main.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+        
+    <script>
+         $("#id_contest").change(function (){
+            var url = "{% url 'ajax_load_contest_admin' %}";
+            var e = document.getElementById("id_contest");
+            var codeId = e.options[e.selectedIndex].value;
+            console.log(codeId);
+            $.ajax({
+                url: url,
+                data: {
+                    'code': codeId
+                },
+                success: function (data) {
+                    window.location.href="{% url 'jury_scoreboard' %}";
+                    window.location.href="{{request.get_full_path}}";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+           

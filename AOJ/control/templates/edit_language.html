@@ -1,0 +1,39 @@
+{% extends 'admin_base_site.html'%}
+{% block title%}Edit Language{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+<div style="margin-left: 15%;  margin-right: 35%;" >
+
+    <div class="card">
+	    <div class="card-header" style="font-size: 18px;"> 
+	        <strong>Change Password</strong> 
+            <ul class="object-tools" style="position: absolute;top: 60px; right: 15px;">
+	           <li> 
+	           	<a href="{% url 'delete_language' language_id %}">delete language?</a>
+	           </li>
+	       </ul>
+	    </div>
+        <form  method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            {% include 'horizontal_form.html' %}
+            <input type="submit" value="Update" style="margin-left: 2%;">
+	        <input type="hidden" name="next" value="{{ next }}">         
+    </form>
+    
+    </div>
+</div>
+{% endblock %}
+
+   
+
+
+
+
+
+
+
+
+
+

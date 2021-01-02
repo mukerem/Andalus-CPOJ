@@ -1,0 +1,54 @@
+[
+    {
+        "model": "authentication.Role",
+        "pk": 1,
+        "fields": {
+            "role": "Database Admin",
+           "short_name": "super"
+        }
+    },
+    {
+        "model": "authentication.Role",
+        "pk": 2,
+        "fields": {
+            "role": "Adminstrative User",
+           "short_name": "admin"
+        }
+    },
+    {
+        "model": "authentication.Role",
+        "pk": 3,
+        "fields": {
+            "role": "Jury User",
+           "short_name": "jury"
+        }
+    },
+    {
+        "model": "authentication.Role",
+        "pk": 4,
+        "fields": {
+            "role": "Contestant User",
+           "short_name": "contestant"
+        }
+    },
+    {
+        "model": "authentication.Role",
+        "pk": 5,
+        "fields": {
+            "role": "Public User",
+           "short_name": "public"
+        }
+    },
+    
+    {
+       "model": "authentication.Campus",
+        "pk": 1,
+        "fields": {
+            "name": "Adama Science and Technology University",
+            "short_name": "ASTU",
+            "logo": "astu.jpeg",
+            "country": "Ethiopia"
+        }
+    }
+    
+]

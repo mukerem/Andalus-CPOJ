@@ -1,0 +1,38 @@
+{% extends base_page %}
+
+{% block title%} Rating{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+<div class="card" style="margin-left: 5%;  margin-right: 5%;margin-top:2%;%" >
+    <div class="card-header titles" style="font-size: 18px;" > 
+	    <strong>CONTESTANT LEADERBOARD</strong> 
+        <ul class="object-tools" style="position: absolute;top: 60px; right: 15px;">
+           <li> </li>
+       </ul>    
+        <table class="table table-striped" >
+            <thead class="table-info">
+                <tr>
+                    <th ><strong>Rank</strong></th>
+                    <th ><strong>Username</strong></th>
+                    <th ><strong>Name</strong></th>
+                    <th ><strong>Campus</strong></th>
+                    <th ><strong>Rating</strong></th>
+                </tr>
+            </thead>
+            {% for rank, user in user_rank %}
+                <tr>
+                    <td> {{rank}} </td>
+                    <td ><a href="{% url 'edit_user' user.id %}" style="text-decoration: none;">{{user.username}}</a></td>
+                    <td >{{user.name}}</td>
+                    <td> {{user.campus}} </td>
+                    <td> {{user.rating}} </td>
+                    
+                    
+                </tr>
+            {% endfor %}
+        </table>        
+    </div>
+<div>
+{% endblock %}

@@ -1,0 +1,278 @@
+{% extends 'contestant_base_site.html' %}
+{% load widget_tweaks %}
+{% block title%}Submission List | Andalus {% endblock %}
+{% block content %}  
+{% load static %} 
+{% load js %} 
+
+<style>
+
+    button {
+        background-color: gray;
+        border: 0;
+        border-radius: 4px;
+        padding: 8px 24px;
+        font-size: 18px;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
+
+    button:focus {
+        outline: none;
+    }
+
+    button:hover {
+        background: rgb(214, 85, 89);
+    }
+
+    [class^="popup"] {
+        background: rgba(100, 100, 100, 0.5);
+        position: fixed;
+        display: none;
+        z-index: 5000;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        
+    }
+
+    [class^="popup"] > div {
+        max-width: 600px;
+        width: 70%;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+        background: #FFFFFF;
+        padding: 30px;
+        z-index: 5001;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    .submission {
+        transition: all 0.1s ease-in-out;
+    }
+
+    .submission:hover {
+        cursor: pointer;
+        background-color: rgba(0, 255, 0, 0.1) !important;
+    }
+
+    [class^="submitted-code"] {
+        position: relative;
+        display: none;
+        background-color: #FFF;
+        border-radius: 8px;
+        box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
+        left: 0;
+        top: 0;
+    }
+
+    .source-code-editor {
+        height: 500px;
+        width: 540px;
+        font-size: 20px;
+    }
+</style>
+<script src="{% static 'ace-builds/src/ace.js' %}" type="text/javascript" charset="utf-8"> </script>
+<script src="{% static 'ace-builds/src/theme-twilight.js' %}" type="text/javascript" charset="utf-8"> </script>
+<script src="{% static 'ace-builds/src/mode-javascript.js' %}" type="text/javascript" charset="utf-8"> </script>
+
+
+<div>
+
+    {% if request.session.start_contest_contestant %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table class="">
+            <tr>
+                {% for field in form.visible_fields %}
+                <td style="vertical-align: middle;"><strong>{{ field.label|upper }}</strong></td>
+                <td>{{field}}</td>
+                {% endfor %}
+                <td> <input type="submit" name="submit"></td>
+            </tr>
+        </table>
+    </form>
+
+    {% elif request.session.active_contest_contestant %}
+    <div>
+        <h5 class="ur-card-title" style="font-size: 1.5em;">contest {{contest_title}} start on {{start_time}}</h5>
+    </div>
+    {% else %}
+    <div class="container nocontest">
+        <h5 class="ur-card-title" style="font-size: 2em;">There is no active contest</h5>
+    </div>
+    {% endif %}
+    <div class="col-sm-8 col-centered">
+        {% if all_current_contest_submits %}
+        <table class="table" >
+            <thead class="thead-dark">
+                <tr>
+                    <th ><strong>No.</strong></th>
+                    <th ><strong>Contest time</strong></th>
+                    <th ><strong>Real time</strong></th>
+                    <th ><strong>Problem</strong></th>
+                    <th ><strong>Language</strong></th>
+                    <th ><strong>Result</strong></th>
+                </tr>
+            </thead>
+            
+        {% for i in all_current_contest_submits %}                
+                <tr class = "submission" data-js="open{{forloop.counter}}">
+                    <td class="id" >{{i.id}}</td> {% comment %} {{forloop.counter}} {% endcomment %}
+                    <td>{{i.contest_time}}</td>
+                    <td>{{i.submit_time}}</td>
+                    <td>{{i.problem.short_name}}</td>
+                    <td>{{i.language}}</td>
+                    {%if i.result == "Correct"%}
+                    <td style="color:green;">{{i.result}}</td>
+                    {%elif i.result == 'Too Late'%}
+                    <td style="color:gray;">{{i.result}}</td>
+                    {%else%}
+                    <td style="color:red;">{{i.result}}</td>
+                    {%endif%}
+                </tr>
+                
+                <div class="popup{{forloop.counter}}">
+                    <div class="ur-card">
+                       <div class="submitted-code-{{ i.id }}">
+                            {% comment %} <div>
+                                <p>Explanation</p>
+                                <textarea cols="48" rows="5">Hello world</textarea>
+                            </div> {% endcomment %}
+                            <p>Source Code</p>
+
+                            <div id="editor-{{i.id}}" class="source-code-editor"><pre><code>{{ i.source_code}}</code></pre></div>
+                            {% comment %} <button name="close" >close</button> {% endcomment %}
+                        </div>
+                        <script type="text/javascript"> 
+                            var language_mode = '{{i.language_mode}}';
+                            var editor = ace.edit("editor-{{i.id}}");
+                            editor.setTheme("ace/theme/monokai");
+                            editor.session.setMode("ace/mode/" + language_mode);
+                        </script>
+                    </div>
+                </div>
+        {%endfor%}
+        </table>
+        {% endif %}
+    </div>
+
+    <script>
+        var submission = document.querySelectorAll('.submission');        
+        var code = document.querySelectorAll('[class^="submitted-code"]');
+
+        for(let i=0; i<submission.length; i++) {
+            var sub = submission[i];
+            sub.addEventListener('click', () => {
+                for(let j=0; j<submission.length; j++) {
+                    if(sub == submission[j]) {
+                        code[i].style.display = 'block';
+                    } else {
+                        code[j].style.display = 'none';
+                    }
+                }
+            });
+        }
+        
+        $("#id_submit_file").change(function () {
+            
+            var langage_selector = null;
+            var file = document.getElementById("id_submit_file").value;
+            var problem = document.getElementById("id_problem").value;
+            // var language = document.getElementById("id_language").value;
+            var extension = file.split('\\').slice(-1)[0].split('.')[1];
+            var file_name = file.split('\\').slice(-1)[0].split('.')[0].toLowerCase();
+
+            // console.log(name, extension);
+            
+            if(!langage_selector){
+                var url = "{% url 'ajax_get_language_list' %}";
+                $.ajax({
+                    url: url,
+                    data: {},
+                    success: function (data) {
+                        langage_selector = {"language_list": data["language_list"], "problem_list": data["problem_list"]};
+                        var language_list = langage_selector["language_list"];
+                        var problem_list = langage_selector["problem_list"];
+                        let best_language = null;
+                        for(let i=0; i< language_list.length; i++){
+                            if(language_list[i][1] == extension){
+                                best_language = language_list[i][0];
+                                break;
+                            }
+                        }
+                        all_language_list = document.getElementById("id_language");
+                        for (let c = 0; c < all_language_list.length; c++) {
+                            if (all_language_list.options[c].value == best_language) {
+                                all_language_list.options[c].selected = true;
+                                break;
+                            }
+                        }
+
+                        let best_problem = null;
+                        for(let i=0; i< problem_list.length; i++){
+                            if(problem_list[i][1] == file_name || problem_list[i][2] == file_name){
+                                best_problem = problem_list[i][0];
+                                break;
+                            }
+                        }
+                        all_problem_list = document.getElementById("id_problem");
+                        for (let c = 0; c < problem_list.length; c++) {
+                            if (all_problem_list.options[c].value == best_problem) {
+                                all_problem_list.options[c].selected = true;
+                                break;
+                            }
+                        }
+                        
+                    }
+                });
+            }
+            else{
+                var language_list = langage_selector["language_list"];
+                var problem_list = langage_selector["problem_list"];
+                                            
+                let best_language = null;
+                for(let i=0; i< language_list.length; i++){
+                    if(language_list[i][1] == extension){
+                        best_language = language_list[i][0];
+                        break;
+                    }
+                }
+                all_language_list = document.getElementById("id_language");
+                for (let c = 0; c < language_list.length; c++) {
+                    if (all_language_list.options[c].value == best_language) {
+                        all_language_list.options[c].selected = true;
+                        break;
+                    }
+                }
+
+                let best_problem = null;
+                for(let i=0; i< problem_list.length; i++){
+                    if(problem_list[i][1] == file_name || problem_list[i][2] == file_name){
+                        best_problem = problem_list[i][0];
+                        break;
+                    }
+                }
+                all_problem_list = document.getElementById("id_problem");
+                for (let c = 0; c < problem_list.length; c++) {
+                    if (all_problem_list.options[c].value == best_problem) {
+                        all_problem_list.options[c].selected = true;
+                        break;
+                    }
+                }
+                
+            }
+         
+            
+        });
+    </script>
+    
+
+
+</div>
+{% endblock %}

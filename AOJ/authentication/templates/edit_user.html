@@ -1,0 +1,30 @@
+{% extends 'admin_base_site.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block title%}User Register{% endblock %}
+{% block content %}  
+<div style="margin-left: 15%;  margin-right: 35%;" >
+	
+	<div class="card">
+	    <div class="card-header" style="font-size: 18px;"> 
+	        <strong>USER REGISTRATION FORM</strong> 
+	        <ul class="object-tools" style="position: absolute;top: 60px; right: 15px;">
+	           <li> 
+	           	<a href="{% url 'delete_user' user_id%}">delete user?</a>
+	           </li>
+	       </ul>
+	    </div>
+
+	    <form method="POST" novalidate>
+	        {% csrf_token %}
+				{% include 'horizontal_form_5.html' %}
+	            <input type="submit" value="Update" style="margin-left: 1%;">
+	            <input type="hidden" name="next" value="{{ next }}">    
+	        </form>
+	        
+	</div>
+</div>
+{% endblock %}
+        
+   
+

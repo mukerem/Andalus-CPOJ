@@ -1,0 +1,102 @@
+{% extends 'admin_base_site.html'%}
+
+{% block title%} Single user rejudge {% endblock %}
+{% block content %}
+{% load static %}
+     <div class="row">
+        <div class="col-sm-4 col-centered" style="margin-top: 2em; margin-left:5em;">
+            <table class="table table-light" style="margin-top: 4em;">
+                <tr>
+                    <td ><strong>user: </strong></td>
+                    <td >{{submit.0.user}}</td>
+                </tr>
+
+                <tr>
+                    <td ><strong>problem: </strong></td>
+                    <td >{{submit.0.problem}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-sm-7 col-centered" style="margin-top: 2em;">
+            <button class="btn btn-primary" onclick="startRejudge()" style="float: right; width: 200px;">start rejudging</button> 
+            <table class="table table-striped"  style="margin-top: 4em;">
+            <thead class="table-info">
+            <tr>
+                <th ><strong>SID</strong></th>
+                <th ><strong>Submit time</strong></th>
+                <th ><strong>Language</strong></th>
+                <th ><strong>Result</strong></th>
+                <th ><strong>Detail</strong></th>
+            </tr>
+            </thead>
+            {% for i in submit %}
+                <tr class="submit" id="{{i.id}}">
+                    <td >{{i.id}}</td>
+                    <td >{{i.submit_time}}</td>
+                    <td >{{i.language}}</td>
+                    {%if i.result == 'Correct'%}
+                        <td style="color:green;" class="result" id="result-{{i.id}}">{{i.result}}</td>
+                    {%else%}
+                        <td style="color:red;" class="result" id="result-{{i.id}}">{{i.result}}</td>
+                    {%endif%}
+                    <td >
+                        <a  title="detail" href="{% url 'public_submission_detail' i.id %}"> <img src="{% static 'Images/icons/view_detail.png' %}" height="20" width="20"></a>
+                    
+                    </td>
+                </tr>
+            {% endfor %}
+            </table>
+        
+        </div>
+    </div>
+    <script>
+        function startRejudge(){
+            var i, all_results, all_rows, row_id, result, result_id;
+            var submit_array = new Array();
+            all_rows = document.getElementsByClassName("submit");
+            all_results = document.getElementsByClassName("result");
+            for (i=0; i<all_results.length; i++){
+                all_results[i].style.color = "gray";
+                all_results[i].innerText = "pending ...";
+            }
+            
+            for (i=0; i<all_rows.length; i++){
+                submit_array[i] = all_rows[i].id;
+                
+            }
+            reJudge(submit_array);
+
+        }
+
+        function reJudge(total_submit){
+            $.ajax({ 
+                url:"{% url 'ajax_public_rejudge' %}",
+                data:{
+                    'total_submit[]': total_submit,
+                },
+                success: function(data){
+                        
+                    var submit_id,total_result, result, result_id, this_row, this_row_result;
+                    total_result = data["result"];
+                    console.log(total_result);
+                    for (i=0; i < total_submit.length; i++){
+                        submit_id = total_submit[i];
+                        result = total_result[submit_id];
+                        result_id = "result-" + submit_id;
+                        this_row = document.getElementById(submit_id);
+                        this_row_result = document.getElementById(result_id);
+                        this_row_result.innerText = result;
+
+                        if (result == "Correct"){
+                            this_row_result.style.color = "green";
+                        }
+                        else{
+                            this_row_result.style.color = "red";
+                        }
+                        this_row.style.backgroundColor ="#7af0dc";
+                    } 
+                }
+            }); 
+        }
+    </script>
+{% endblock %}

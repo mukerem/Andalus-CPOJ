@@ -1,0 +1,31 @@
+{% extends 'admin_base_site.html'%}
+{% block title%}Score Values | Andalus{% endblock %}
+
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+<div class="col-sm-6 col-centered" style="margin-top: 2em;">
+    <h5 class="ur-card-title" style="font-size: 2em;">score values list 
+    </h5>
+    <table class="table table-striped">
+        <thead class="table-info">
+            <tr>
+                <th ><strong>Name</strong></th>
+                <th ><strong>Value</strong></th>
+            </tr>
+        </thead>
+        {% for i in score_values %}
+            <tr>
+                <td>
+                    <a href="{% url 'edit_score_values' i.id %}" style="text-decoration: none;">{{i.name}}</a>
+                </td>
+                <td >{{i.value}}</td>
+            </tr>
+        {% endfor %}
+    </table>        
+</div>
+
+{% endblock %}
+
+   

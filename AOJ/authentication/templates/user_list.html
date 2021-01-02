@@ -1,0 +1,219 @@
+{% extends 'admin_base_site.html'%}
+{% block title%}User List | Andalus{% endblock %}
+
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+<style>
+    .pagination {
+        display: inline-block;
+    }
+
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+    .pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+    }
+
+    .pagination a:hover:not(.active) {background-color: #ddd;}
+    .pagination a:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .pagination a:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+    .center {
+        text-align: center;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'files/ranklist.css' %}" type="text/css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://www.solodev.com/assets/pagination/jquery.twbsPagination.js"></script>
+<script src="paging.js"></script>
+<div class="card" style="margin-left: 5%;  margin-right: 5%;" >
+    <div class="card-header titles" style="font-size: 18px;" > 
+        <ul class="object-tools" style="position: absolute;top: 60px; right: 15px;">
+           <li> <a href="{% url 'user_register' %}" class = "addlink">Add user</a></li>
+       </ul>
+        <div class="title">contestant user</div>
+        <div class="title">public user</div>
+        <div class="title">admin user</div>
+        <div class="title">jury user</div>
+
+    </div>
+
+    <div class="content">
+        <div class="item">
+            <div class="card">
+                <table>
+                    <tr>
+                        <td> <strong>No. </strong></td>
+                        <td> <strong>User Name </strong></td>
+                        <td> <strong>Full Name </strong></td>
+                        <td> <strong>E-Mail </strong></td>
+                        <td> <strong>Campus </strong></td>
+                        <td> <strong>Rating </strong></td>
+                    </tr>
+                    <tr>
+                    {% for i in contestant_user %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td><a href="{% url 'edit_user' i.id %}">{{i.username}}</a></td>
+                            <td>{{i.name}}</td>
+                            <td>{{i.email}}</td>
+                            <td>{{i.campus}}</td>
+                            <td>{{i.rating}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tr>
+                </table>
+            </div>
+            <a class = "btn btn-outline-info" href="{% url 'generate_user_password' 'contestant' %}" style="margin:2em 0 2em 0;">Generate Password</a>
+        </div>
+
+        <div class="item">
+            <div class="card">
+                <table>
+                    <tr>
+                        <td> <strong>No. </strong></td>
+                        <td> <strong>User Name </strong></td>
+                        <td> <strong>Full Name </strong></td>
+                        <td> <strong>E-Mail </strong></td>
+                        <td> <strong>Campus </strong></td>
+                        <td> <strong>Rating </strong></td>
+                    </tr>
+                    <tr>
+                    {% for i in public_user %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td><a href="{% url 'edit_user' i.id %}">{{i.username}}</a></td>
+                            <td>{{i.name}}</td>
+                            <td>{{i.email}}</td>
+                            <td>{{i.campus}}</td>
+                            <td>{{i.rating}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tr>
+                </table>
+            </div>
+            <a class = "btn btn-outline-info" href="{% url 'generate_user_password' 'public' %}" style="margin:2em 0 2em 0;">Generate Password</a>
+        </div>
+
+        <div class="item">
+            <div class="card">
+                <table>
+                    <tr>
+                        <td> <strong>No. </strong></td>
+                        <td> <strong>User Name </strong></td>
+                        <td> <strong>Full Name </strong></td>
+                        <td> <strong>E-Mail </strong></td>
+                        <td> <strong>Campus </strong></td>
+                        <td> <strong>Rating </strong></td>
+                    </tr>
+                    <tr>
+                    {% for i in admin_user %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td><a href="{% url 'edit_user' i.id %}">{{i.username}}</a></td>
+                            <td>{{i.name}}</td>
+                            <td>{{i.email}}</td>
+                            <td>{{i.campus}}</td>
+                            <td>{{i.rating}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tr>
+                </table>
+            </div>
+            <a class = "btn btn-outline-info" href="{% url 'generate_user_password' 'admin' %}" style="margin:2em 0 2em 0;">Generate Password</a>
+        </div>
+
+
+        <div class="item">
+            <div class="card">
+                <table>
+                    <tr>
+                        <td> <strong>No. </strong></td>
+                        <td> <strong>User Name </strong></td>
+                        <td> <strong>Full Name </strong></td>
+                        <td> <strong>E-Mail </strong></td>
+                        <td> <strong>Campus </strong></td>
+                        <td> <strong>Rating </strong></td>
+                    </tr>
+                    <tr>
+                    {% for i in jury_user %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td><a href="{% url 'edit_user' i.id %}">{{i.username}}</a></td>
+                            <td>{{i.name}}</td>
+                            <td>{{i.email}}</td>
+                            <td>{{i.campus}}</td>
+                            <td>{{i.rating}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tr>
+                </table>
+            </div>
+            <a class = "btn btn-outline-info" href="{% url 'generate_user_password' 'jury' %}" style="margin:2em 0 2em 0;">Generate Password</a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function openUserList(evt, type) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        document.getElementById(type).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+
+    var titles = document.querySelectorAll('.title');
+    var items = document.querySelectorAll('.item');
+
+    items[0].style.display = 'block';
+    titles[0].setAttribute('data-status', 'active');
+    
+    for(let i=0; i<titles.length; i++) {
+        let status = true;
+
+        
+        titles[i].addEventListener('click', function(event) {
+            if(status) {
+                items[i].style.display = 'block';
+                titles[i].setAttribute('data-status', 'active');
+                
+                for(let j=0; j<titles.length; j++) {
+                    if(titles[j] != event.target) {
+                        items[j].style.display = 'none';
+                        titles[j].removeAttribute('data-status');
+                    }
+                }
+
+                status = true;
+            }
+        });
+    }
+</script>
+{% endblock %}
+
+   

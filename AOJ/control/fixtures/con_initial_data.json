@@ -1,0 +1,26 @@
+[
+    {
+        "model": "control.Setting",
+        "pk": 1,
+        "fields": {
+            "name": "punish time",
+            "value": 20
+        }
+    },
+    {
+        "model": "control.Setting",
+        "pk": 2,
+        "fields": {
+            "name": "rating correct value",
+            "value": 20
+        }
+    },
+    {
+        "model": "control.Setting",
+        "pk": 3,
+        "fields": {
+            "name": "rating punish value",
+            "value": 1
+        }
+    }
+]

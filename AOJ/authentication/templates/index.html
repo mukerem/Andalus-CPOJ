@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    {% load widget_tweaks %}
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{% static 'files/style1.css' %}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,400&display=swap" rel="stylesheet">
+
+        <title>Login | Andalus</title>
+    </head>
+    <body>
+        <!-- <div class="ur-navbar">
+            <div class="ur-brand">
+                <a href="#" class="ur-brand-title"><h1>Andalus</h1></a>
+            </div>
+        </div> -->
+        <div class="ur-container">
+            <div class="ur-card">
+                <h1 class="ur-card-title">Login</h1>
+                <form class="ur-form" method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <input type="text" class="input-field" name="username" value="" placeholder="Username" autofocus>
+                    <input type="password" name="password" value="" placeholder="Password">
+                    
+                    <button type="submit" name="button" class="ur-btn">Login</button>
+                </form>
+                <a href="{% url 'password_reset' %}" class="ur-link">Forgot password?</a>
+            </div>
+
+            <div class="ur-link-group">
+                <a href="{% url 'public_scoreboard' %}" class="ur-link">Public</a>
+                <a href="{% url 'login' %}" class="ur-link">Login</a>
+                <a href="{% url 'register' %}" class="ur-link">Register</a>
+            </div>
+        </div>
+        <div class="content-wrapper">
+        {% block message %}
+                <br>
+                {% include 'message.html' %}
+        {% endblock%}
+        </div>
+        <script src="{% static 'files/main.js' %}"></script>
+    </body>
+</html>

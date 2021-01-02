@@ -1,0 +1,153 @@
+{% extends base_page %}
+
+{% block title%}Scoreboard{% endblock %}
+{% block content %}  
+{% load static %} 
+{% load js %} 
+
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet"  type="text/css" />
+
+    <div class="content" id="active_contest_scoreboard">
+    {% if not request.session.active_contest_admin %}
+        <div class="container nocontest">
+            <h5 class="ur-card-title" style="font-size: 2em;">There is no active contest</h5>
+        </div>
+    {% elif not request.session.start_contest_admin %}
+    <div>
+        <h5 class="ur-card-title" style="font-size: 1.5em;">contest {{contest_title}} start on {{start_time}}</h5>
+    </div>
+    {% elif scoreboard %}
+        <div class="contest-name">
+            Scoreboard {{ contest.title }}
+        </div>
+        <br> 
+        <div class="scoreboard">
+            <table style="border-collapse: separate;">
+                <tr >
+                    <thead>
+                        <th class="th bottom right">RN </th>
+                        <th class="th bottom right">TEAM</th>
+                        <th class="th bottom right score">∑</th>
+                        <th class="th bottom right score">PEN</th>
+                        {% for i in total_problems%}
+                            <th class="th bottom score">
+                                <a href="{{i.pdf.url}}"> {{i.short_name}} <span style="height: 15px; width: 15px; background-color: {{i.ballon}}; 
+                                    border-radius: 50%; display: inline-block;"></span> </a> </th>
+                        {%endfor%}
+                    
+                    </thead>
+                </tr>
+                {% if scoreboard.scoreboard_jury %}
+                    {% for point, punish_time, last_submit_time, teamname, user_id, univname, flag, cell_data, rank in scoreboard.scoreboard_jury %}
+                    <tr>
+                        <tbody>                               
+                            <td class="td right"> {{rank}} </td>
+                            <td class="td right team">
+                                <img src="{% static flag %}">
+                                <div id="teamname"> {{teamname}} </div>
+                                <div id="univname"> {{univname}}</div>
+                            </td>
+                            <td class="td right score">{{point}}</td>
+                            <td class="td right score">{{punish_time}}</td>
+                            {% for try, time, color, prob_id in cell_data %}
+                                {% if not color == '#ffffff' %}
+                                    <td class="td score" style="background-color: {{ color }}" 
+                                        onclick="cellClick('{{user_id}}', '{{prob_id}}', '{{contest.id}}')">
+                                        
+                                    {% if not time == -1 %}
+                                        <div id="time" > {{ time }} </div>
+                                    {% endif %}
+                                    {% if try == 1 %}
+                                        <div id="try"> {{ try }} try </div> </td>
+                                    {% elif not try == 0 %}
+                                        <div id="try"> {{ try }} tries </div> </td>
+                                    {% endif %}
+                                {% else %}
+                                <td class="td score"> <div id="time" > </div><div id="try">  </div> </td>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+
+                <tr>
+                    {% for row in scoreboard.summary %}
+                        <td style="height:40px; padding: 10px;" class="top" > <strong>{{row}}</strong> </td>
+                    {% endfor %}
+                </tr>
+            </table> 
+
+            
+            <div class="container col-9" style="margin-top: 50px; float: left;" >
+                <p><strong>Cell colours</strong></p>
+                <table >
+                    <tr>
+                        <td style="background-color:#26ac0c; height:20px; width:100px;font-size:16px;"> 
+                            <strong>solved first</strong>
+                        </td>
+
+                        <td style="background-color:#2ef507; height:20px; width:100px; font-size:16px; "> 
+                            <strong>solved</strong>
+                        </td>
+                        <td style="background-color:#F67B51 ; height:20px; width:120px; font-size:14px;"> 
+                            <strong>tried, incorrect</strong>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+    
+                
+            </div>
+        </div>  
+        
+        {% endif %}
+            
+    </div>
+    <footer>
+        <br><br><br>
+    </footer>
+    {% if request.session.current_contest_start_time and request.session.current_contest_end_time %}
+    <script>
+        var countDownDate_start = "{{request.session.current_contest_start_time}}";
+        var countDownDate_end = "{{request.session.current_contest_end_time}}";
+    </script>
+    {% else %}
+    <script>
+        var countDownDate_start = 0;
+        var countDownDate_end = 0;
+    </script>
+    {% endif %}
+     
+    <script>
+        function cellClick(user_id, problem_id, contest_id){
+            $.ajax({ 
+                url:"{% url 'specific_problem_submission' %}",
+                data:{
+                    'problem_id': problem_id,
+                    'user_id': user_id,
+                    'contest_id': contest_id,
+                },
+                success: function(data){
+                    document.open();
+                    document.write(data);
+                    document.close();
+                }
+            }); 
+        }
+
+        // setInterval(function(){
+        //     $.ajax({ 
+        //         url:"{% url 'jury_scoreboard_refresh' %}",
+        //         success: function(data){
+        //             if(data){
+        //                 $("#active_contest_scoreboard").html(data);
+        //             }
+        //         }
+        //     }); 
+
+        // }, 5000);
+    </script>
+ 
+{% endblock %}

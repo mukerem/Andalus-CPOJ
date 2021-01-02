@@ -1,0 +1,46 @@
+{% load static %}
+
+
+{% if not submission_list %}
+    <div style="margin:2em 10em 0 5em "  id="submission_view">
+        <label style="margin: 0 0 20px; font-weight: 300; font-size: 20px; color: #666;">
+            submission list for problem: {{problem_title}}
+        </label>  
+    </div>
+{% else %} 
+    <label style="margin: 0 0 20px; font-weight: 300; font-size: 20px; color: #666;">
+        submission list for problem: {{problem_title}}
+    </label>  
+        
+    <table class="table table-striped">
+        <thead class="table-info">
+        <tr>
+            <th ><strong>SID</strong></th>
+            <th ><strong>submit time</strong></th>
+            <th ><strong>user</strong></td></th>
+            <th ><strong>problem</strong></th>
+            <th ><strong>language</strong></th>
+            <th ><strong>result</strong></th>
+            <th ><strong>detail</strong></th>
+        </tr>
+        </thead>
+        {% for i in submission_list %}
+            <tr class="submit" id="{{i.id}}">
+                <td >{{i.id}}</td>
+                <td >{{i.submit_time}}</td>
+                <td >{{i.user}}</td>
+                <td >{{i.problem}}</td>
+                <td >{{i.language}}</td>
+                {%if i.result == 'Correct'%}
+                    <td style="color:green;">{{i.result}}</td>
+                {%else%}
+                    <td style="color:red;">{{i.result}}</td>
+                {%endif%}
+                <td >
+                    <a  title="detail" href="{% url 'public_submission_detail' i.id %}"> <img src="{% static 'Images/icons/view_detail.png' %}" height="20" width="20"></a>
+                
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}

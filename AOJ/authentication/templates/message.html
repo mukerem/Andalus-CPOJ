@@ -1,0 +1,11 @@
+<div class="col-sm-6" style="margin-left: 5%;">
+    {% if messages%}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{{message.tags}}">
+                <h5> {{message}} </h5>
+            </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>

@@ -1,0 +1,183 @@
+{% extends 'jury_base.html'%}
+{% block title%}Detail Contest{% endblock %}
+
+
+{% load static %}
+{% block content %}
+    
+<br><br>
+<div class="row">
+    <div class="col-md-6" style="margin-left:5%;">
+
+        {% if not total_contest %}
+            <div class="col-sm-8" style="margin-left:5%;">
+                <h3>There is no contest</h3>
+            </div>
+        {% else %}
+        <table class="table table-striped" >
+                <thead class="table-info">
+                    <tr>
+                        <th ><strong>CID</strong></th>
+                        <th ><strong>title</strong></th>
+                        <th ><strong>start time</strong></th>
+                        <th ><strong>detail</strong></th>
+                    
+                    </tr>
+                </thead>
+                {% for i in total_contest %}
+                    
+                   {% if this_contest.id == i.id %}
+                        <tr style="background: rgb(147, 255, 250);">
+                            <td >{{i.id}}</td>
+                            <td >{{i.title}}</td>
+                            <td >{{i.start_time}}</td>
+                            <td style="float: right;" >
+                                <a href="{% url 'jury_contest_detail' i.id %}" style="margin-right:20px;" title="view detail"> <img src="{% static 'Images/icons/view_detail.png' %}" height="20" width="20"></a>
+                            </td>
+                        </tr>
+                    {% elif not i.enable %}
+                        <tr style="background: rgb(143, 236, 112);">
+                            <td >{{i.id}}</td>
+                            <td >{{i.title}}</td>
+                            <td >{{i.start_time}}</td>
+                            <td style="float: right;" >
+                                <a href="{% url 'jury_contest_detail' i.id %}" style="margin-right:20px;" title="view detail"> <img src="{% static 'Images/icons/view_detail.png' %}" height="20" width="20"></a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td >{{i.id}}</td>
+                            <td >{{i.title}}</td>
+                            <td >{{i.start_time}}</td>
+                            <td style="float: right;" >
+                                <a href="{% url 'jury_contest_detail' i.id %}" style="margin-right:20px;" title="view detail"> <img src="{% static 'Images/icons/view_detail.png' %}" height="20" width="20"></a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                         
+                
+                {% endfor %}
+            </table>
+        {% endif %}
+        
+    </div>
+
+    <div class="col-md-4" style="margin-left: 10%;">
+    
+        <h4>Detail Contest: {{this_contest.title}}</h4><br>
+        <table style="font-size:15px; width:100%;" class="table table-light"> 
+            <tr>
+                <td style="width:30%;"> <strong>ID: </strong></td>
+                <td style="width:70%;"> {{this_contest.id}} </td>
+            </tr>
+            <tr>
+                <td style="width:30%;"> <strong>Title: </strong></td>
+                <td style="width:70%;"> {{this_contest.title}} </td>
+            </tr>
+            <tr>
+                <td style="width:30%;"> <strong>Active Time: </strong></td>
+                <td style="width:70%;"> {{this_contest.active_time}} </td>
+            </tr>
+            <tr>
+                <td style="width:30%;"> <strong>Start Time: </strong></td>
+                <td style="width:70%;"> {{this_contest.start_time}} </td>
+            </tr>
+            <tr>
+                <td style="width:30%;"> <strong>End Time: </strong></td>
+                <td style="width:70%;"> {{this_contest.end_time}} </td>
+            </tr>
+            {% if this_contest.frozen_time %}
+            <tr>
+                <td style="width:30%;"> <strong>Frozen Time: </strong></td>
+                <td style="width:70%;"> {{this_contest.frozen_time}} </td>
+            </tr>
+            {% endif %}
+            {% if this_contest.unfrozen_time %}
+            <tr>
+                <td style="width:30%;"> <strong>Unfrozen Time: </strong></td>
+                <td style="width:70%;"> {{this_contest.unfrozen_time}} </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td style="width:30%;"> <strong>Deactivate Time: </strong></td>
+                <td style="width:70%;"> {{this_contest.deactivate_time}} </td>
+            </tr>
+            <tr>
+                <td style="width:30%;"> <strong>Is Public: </strong></td>
+                <td style="width:70%;"> {{this_contest.is_public}} </td>
+            </tr>
+            <tr>
+                <td style="width:30%;"> <strong>Has Value: </strong></td>
+                <td style="width:70%;"> {{this_contest.has_value}} </td>
+            </tr>
+            <tr>
+                <td style="width:30%;"> <strong>Enable: </strong></td>
+                <td style="width:70%;"> {{this_contest.enable}} </td>
+            </tr>
+            {% if this_contest.photo %}
+            <tr>
+                <td style="width:30%;"> <strong>Photo: </strong></td>
+                <td style="width:70%;"><img src="{{this_contest.photo.url}}" style="width:50%; height:100px;"  /> </td>
+            </tr>
+            {% endif %}
+
+            {% if this_contest.problem.all %}
+            <tr>
+                <td style="width:30%;"> <strong>Problems:</strong></td>
+                <td style="width:70%;">
+                    <table  style="width:100%;">
+                        {% for i in this_contest.problem.all %}
+                            <tr><td>{{i.title}} </td></tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+            {% endif %}
+            {% if this_contest.team.all %}
+            <tr>
+                <td style="width:30%;"> <strong>Teams:</strong></td>
+                <td style="width:70%;">
+                    <table  style="width:100%;">
+                        {% for i in this_contest.team.all %}
+                            <tr><td>{{i.username}} </td></tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+            {% endif %}
+            {% if this_contest.user.all %}
+            <tr>
+                <td style="width:30%;"> <strong>Users:</strong></td>
+                <td style="width:70%;">
+                    <table  style="width:100%;">
+                        <tr>
+                            <th><strong>Username</strong></th>
+                            <th><strong>Category</strong></th>
+                        </tr>
+                        {% for i in this_contest.user.all %}
+                            <tr>
+                                <td>{{i.username}} </td>
+                                <td>{{i.category}} </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+        
+    </div>
+</div>
+{% endblock %}
+
+   
+
+
+
+
+
+
+
+
+
+

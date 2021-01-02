@@ -1,0 +1,73 @@
+{% extends 'admin_base_site.html'%}
+{% block title%}Contest List | Andalus{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+
+<script  src="{% static 'files/jsi18n.js' %}"> </script>   
+
+<div class="col-sm-12 col-centered" style="margin-top: 2em;">
+    <h5 class="ur-card-title" style="font-size: 1.5em;">contest list 
+        <a class = "btn btn-outline-info" href="{% url 'add_contest' %}" style="float:right;">Add contest</a>
+    </h5>
+    <table class="table table-striped" >
+        <thead class="table-info">
+            <tr>
+                <th ><strong>No.</strong></th>
+                <th ><strong>Title of contest</strong></th>
+                <th ><strong>active time</strong></th>
+                <th ><strong>Start time</strong></th>
+                <th ><strong>end time</strong></th>
+               <!--  <th ><strong>frozen time</strong></th>
+                <th ><strong>unfrozen time</strong></th> -->
+                <th ><strong>deactivate time</strong></th>
+                <th ><strong>Status</strong></th>
+
+            
+            </tr>
+        </thead>
+        {% for i in contest %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td ><a href="{% url 'edit_contest' i.id %}" style="text-decoration: none;">{{i.title}}</a></td>
+                <td >{{i.active_time}}</td>
+                <td >{{i.start_time}}</td>
+                <td >{{i.end_time}}</td>
+                <!--  <td >{{i.frozen_time}}</td>
+                <td >{{i.unfrozen_time}}</td> -->
+                <td >{{i.deactivate_time}}</td>
+                {% if i.status == "on going" %}
+                    <td style="color:green;">
+                        {{i.status}}
+                        <a href="{% url 'deactivate_contest_scoreboard' i.id %}" style="text-decoration: none; float:right;margin-right:2em;">Result</a>
+                    </td>
+                {% elif i.status == "active" %}
+                    <td style="color:black;">{{i.status}}</td>
+                {% elif i.status == "not active" %}
+                    <td style="color:gray;">{{i.status}}</td>
+                {% elif i.status == "end" %}
+                    <td style="color:blue;">
+                        {{i.status}}
+                        <a href="{% url 'deactivate_contest_scoreboard' i.id %}" style="text-decoration: none; float:right;margin-right:2em;">Result</a>                           
+                    </td>
+                {% elif i.status == "deactivate" %}
+                    <td style="color:red;">
+                        {{i.status}}
+                        <a href="{% url 'deactivate_contest_scoreboard' i.id %}" style="text-decoration: none; float:right;margin-right:2em;">Result</a>
+                    </td>
+                {% elif i.status == "disable"%}
+                    <td style="color:#a0a;">{{i.status}}</td>
+                {% endif %}
+
+            </tr>
+        
+        {% endfor %}
+    </table>
+    
+</div>
+
+
+{% endblock %}
+
+   

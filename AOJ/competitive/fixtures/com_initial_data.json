@@ -1,0 +1,59 @@
+[
+    {
+        "model": "competitive.Language",
+        "pk": 1,
+        "fields": {
+            "name": "Python2",
+            "compile_command": "python2 -m py_compile @",
+            "run_command": "python2 @",
+            "extension": "py",
+            "editor_mode": "python"
+        }
+    },
+    {
+        "model": "competitive.Language",
+        "pk": 2,
+        "fields": {
+            "name": "Python3",
+            "compile_command": "python3 -m py_compile @",
+            "run_command": "python3 @",
+            "extension": "py",
+            "editor_mode": "python"
+        }
+    },
+    {
+        "model": "competitive.Language",
+        "pk": 3,
+        "fields": {
+            "name": "Java",
+            "compile_command": "javac @",
+            "run_command": "java -cp #",
+            "extension": "java",
+            "editor_mode": "java"
+        }
+    },
+    {
+        "model": "competitive.Language",
+        "pk": 4,
+        "fields": {
+            "name": "C++",
+            "compile_command": "g++ @ -o #",
+            "run_command": "#",
+            "extension": "cpp",
+            "editor_mode": "c_cpp"
+        }
+    },
+    
+    {
+        "model": "competitive.Language",
+        "pk": 5,
+        "fields": {
+            "name": "C",
+            "compile_command": "gcc @ -o #",
+            "run_command": "#",
+            "extension": "c",
+            "editor_mode": "c_cpp"
+        }
+    }
+   
+]

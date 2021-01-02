@@ -1,0 +1,13 @@
+{% extends 'contestant_base_site.html'%}
+
+<title>{% block title%} Home | Andalus {% endblock %}</title>
+
+{% block content %}
+<div style="margin-left: 5%; margin-top:40px;">
+    <ul >
+        <li ><a href="{% url 'active_contest_problem' %}">Problem</a></li>
+        
+    </ul>
+        
+</div>
+{% endblock %}

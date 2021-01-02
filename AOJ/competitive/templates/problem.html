@@ -1,0 +1,48 @@
+{% extends 'contestant_base_site.html'%}
+{% block title%}Problem List | Andalus{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% if request.session.start_contest_contestant %}
+<div class="col-sm-6 col-centered" style="margin-top: 2em;">
+    <h5 class="ur-card-title" style="font-size: 2em;">problem list </h5>
+    
+    <table class="table table-light" >
+        <thead class="table-info">
+            <tr>
+                <th ><strong>No.</strong></th>
+                <th ><strong>Title of Problem</strong></th>
+                <th ><strong>Short name</strong></th>
+                <th ><strong>Point</strong></th>
+                <th ><strong>time limit</strong></th>
+                <th ><strong>memory limit</strong></th>
+            </tr>
+        </thead>
+        {% for i in problem %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td ><a href="{{i.pdf.url}}" target="_blank" style="text-decoration: none;">{{i.title}} </a></td>
+                <td>{{i.short_name}}</td>
+                <td>{{i.point}}</td>
+                <td>{{i.time_limit}}</td>
+                <td>{{i.memory_limit}}</td>
+
+            </tr>
+        {% endfor %}
+    </table>
+
+</div>
+{% elif request.session.active_contest_contestant %}
+    <div class="col-sm-8 col-centered" style="margin-top: 2em;">
+        <h5 class="ur-card-title" style="font-size: 1.5em;">contest {{contest_title}} start on {{start_time}}</h5>
+    </div>
+{% else %}
+    <div class="container nocontest">
+        <h5 class="ur-card-title" style="font-size: 2em;">There is no active contest</h5>
+    </div>
+{% endif %}
+{% endblock %}
+
+   

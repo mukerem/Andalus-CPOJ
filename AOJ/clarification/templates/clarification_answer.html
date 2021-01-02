@@ -1,0 +1,84 @@
+
+{% extends 'admin_base_site.html' %}
+
+{% block title%}Clarification Request Answer | Andalus {% endblock %}
+{% block content %}  
+{% load static %} 
+{% load widget_tweaks %}
+
+{% if not request.session.active_contest_admin %}
+    <div class="container nocontest">
+        <h5 class="ur-card-title" style="font-size: 2em;">There is no active contest</h5>
+    </div>
+{% else %}
+<div class="row">
+    <div class=" col-md-8" style="margin-top: 2em; ">
+        <h5 class="ur-card-title" style="font-size: 2em;">clarification request list 
+        </h5>
+        <div>
+            {% if all_clarification %}
+            <table class="table table-light" >
+                <thead class="table-info">
+                    <tr>
+                        <th ><strong>ID</strong></th>
+                        <th ><strong>Time</strong></th>
+                        <th ><strong>Problem</strong></th>
+                        <th ><strong>User</strong></th>
+                        <th ><strong>Question</strong></th>
+                        <th ><strong></strong></th>
+
+                    </tr>
+                </thead>
+                
+                {% for i in all_clarification %}
+                    {% if i.id == this_clarification_id %}
+                    <tr style="background: rgb(147, 255, 250);">
+                            <td>{{i.id}}</td>
+                            <td>{{i.send_time}}</td>
+                            {% if i.problem %}
+                            <td>{{i.problem.short_name}}</td>
+                            {% else %}
+                            <td>General</td>
+                            {% endif %}
+
+                            <td>{{i.user.username}}</td>
+                            <td>{{i.short_question}}</td>
+                            <td><a href="{% url 'clarification_answer' i.id %}" style="margin-right:20px;" title="answer"> <img src="{% static 'Images/icons/view_detail.png' %}" height="20" width="20"></a></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td>{{i.id}}</td>
+                        <td>{{i.send_time}}</td>
+                        {% if i.problem %}
+                        <td>{{i.problem.short_name}}</td>
+                        {% else %}
+                        <td>General</td>
+                        {% endif %}
+
+                        <td>{{i.user.username}}</td>
+                        <td>{{i.short_question}}</td>
+                        <td><a href="{% url 'clarification_answer' i.id %}" style="margin-right:20px;" title="answer"> <img src="{% static 'Images/icons/view_detail.png' %}" height="20" width="20"></a></td>
+                    </tr>
+                    {% endif %}
+                {%endfor%}
+            </table>
+            
+            {% endif %}
+        </div>
+    </div>    <div class=" col-md-3" style="margin-top:5em; margin-left:4em;">
+
+        <form enctype="multipart/form-data" method="post" novalidate>
+            {% csrf_token %}
+            {% include 'horizontal_form.html' %}
+            {% comment %} {{form.as_p}} {% endcomment %}
+
+            
+            <button type="submit" class = "btn btn-primary"> save</button>
+        </form>
+        
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+

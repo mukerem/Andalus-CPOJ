@@ -1,0 +1,72 @@
+
+{% extends "public_scoreboard_base_site.html" %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+<div style="margin-left: 20%;  margin-right: 20%;" >
+    
+    <div class="card">
+    <div class="card-header" style="font-size: 18px;"> 
+        <strong>Registration form</strong> 
+    </div>
+   
+    <div class="card-body">
+     {% if form.errors %}
+        <p style="color: red;">Please correct the errors below.</p>
+    {% endif %}
+    
+        <form  method="POST" novalidate>
+            {% csrf_token %}
+            <table class="table table-light">
+                {% for field in form.visible_fields %}
+                    
+                    <tr>
+                        <td>
+                            {% if field.field.required%}
+                                <strong>{{ field.label_tag }}</strong>
+                            {% else %}
+                                {{ field.label_tag }}
+                            {% endif %}
+
+                        </td>
+                        <td >
+                    
+                            {% if form.is_bound %}
+                                {% if field.errors %}
+                                    {% render_field field class="form-field is-invalid" %}
+                                    {% for  error in field.errors %}
+                                        <div style="color: red; margin: 0; padding: 0; font-size: 12px;">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+
+                                {% else %}
+                                    {% render_field field class="form-field is-valid" %}
+                                {% endif %}
+                            {% else %}
+                                {% render_field field class="form-field" %}
+                            {% endif %}
+                                            
+
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    
+                {% endfor %}
+                </table>
+
+
+            <input type="submit" value="Register" style="float: right;">
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+    
