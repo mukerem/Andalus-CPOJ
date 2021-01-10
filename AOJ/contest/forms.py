@@ -56,8 +56,6 @@ class AddContest(forms.ModelForm):
         now = timezone.now()
         # if start_time < now:
         #     raise forms.ValidationError("start time must be after now( " + str(datetime.now())+' )')
-        print(active_time)
-        print(start_time)
         if active_time > start_time:
             raise forms.ValidationError("Active time must be before start time.")
         if end_time < start_time:
@@ -126,8 +124,6 @@ class EditContest(forms.ModelForm):
 
         if (not title) or(not short_name) or (not active_time) or (not start_time) or (not end_time):
             raise forms.ValidationError("Please correct the errors below.")
-        print(active_time)
-        print(start_time)
         if active_time > start_time:
             raise forms.ValidationError("Active time must be before start time.")
         if end_time < start_time:
