@@ -435,6 +435,12 @@ def submit(request):
                 # multiprocessing
                 # pool = multiprocessing.Pool(processes=4)
                 # pool.map(judge(file_name=post.submit_file.path, problem=post.problem, language=post.language, submit=post), request)
+                
+                ########################
+                # TODO: convert the judge function to a function that takes a callback, the callback sets and saves the result to db and update ranklist
+                # TODO: in the meanwhile redirect the user to submission page and show the progress as pending
+                # TODO: when done the function will refresh the page to show the result ?? maybe add a notification like codeforces
+                ########################
 
                 result = judge(file_name=post.submit_file.path,
                                problem=post.problem, language=post.language, submit=post)
