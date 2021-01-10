@@ -24,7 +24,7 @@ class AddContest(forms.ModelForm):
         widgets = {
             'problem': FilteredSelectMultiple(('tags'), is_stacked=True,),
             'user': FilteredSelectMultiple(('tags'), is_stacked=True),
-            'active_time': DateTimeWidget(attrs={'id': '1'}),
+            'active_time': DateTimeWidget(attrs={'id': '1'},options=date_time_options),
             'start_time': DateTimeWidget(attrs={'id': '2'},options=date_time_options,),
             'end_time': DateTimeWidget(attrs={'id': '3'},options=date_time_options,),
             'frozen_time': DateTimeWidget(attrs={'id': '4'},options=date_time_options,),
@@ -124,7 +124,6 @@ class EditContest(forms.ModelForm):
 
         if (not title) or(not short_name) or (not active_time) or (not start_time) or (not end_time):
             raise forms.ValidationError("Please correct the errors below.")
-
         if active_time > start_time:
             raise forms.ValidationError("Active time must be before start time.")
         if end_time < start_time:
