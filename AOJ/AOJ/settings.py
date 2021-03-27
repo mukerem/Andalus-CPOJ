@@ -22,7 +22,7 @@ MEDIA_URL = '/media/'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'rapiandelus@gmail.com'
-EMAIL_HOST_PASSWORD = '8andalus'
+EMAIL_HOST_PASSWORD = '********'
 EMAIL_USE_TLS = True
 
 # Quick-start development settings - unsuitable for production
